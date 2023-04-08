@@ -8,7 +8,7 @@ option java_multiple_files = true;
 option java_package = "org.grpc.rangiffler.grpc.users";
 option java_outer_classname = "RangifflerUsersProto";
 
-service UserService {
+service RangifflerUserService {
   rpc GetAllUsers (google.protobuf.Empty) returns (UsersResponse);
   rpc GetCurrentUser (google.protobuf.Empty) returns (UserResponse);
   rpc GetFriends (google.protobuf.Empty) returns (UsersResponse);

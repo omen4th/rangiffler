@@ -22,15 +22,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         corsCustomizer.corsCustomizer(http);
 
-//        http.authorizeHttpRequests().anyRequest()
-//                .authenticated().and()
-//                .oauth2ResourceServer()
-//                .jwt();
+        http.authorizeHttpRequests().anyRequest()
+                .authenticated().and()
+                .oauth2ResourceServer()
+                .jwt();
 
-        http.authorizeHttpRequests(
-                authorize ->
-                        authorize.anyRequest().permitAll()
-        ).csrf().disable();
+//        http.authorizeHttpRequests(
+//                authorize ->
+//                        authorize.anyRequest().permitAll()
+//        ).csrf().disable();
 
         return http.build();
     }

@@ -6,7 +6,7 @@ import org.rangiffler.model.CountryJson;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CountryService {
+public class GeoService {
 
   private final List<CountryJson> countries = List.of(
       CountryJson.builder()
