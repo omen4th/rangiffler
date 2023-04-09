@@ -16,6 +16,7 @@ import java.util.List;
 
 @Component
 public class GrpcGeoClient {
+
     private static final Logger LOG = LoggerFactory.getLogger(GrpcGeoClient.class);
     private static final Empty EMPTY = Empty.getDefaultInstance();
 

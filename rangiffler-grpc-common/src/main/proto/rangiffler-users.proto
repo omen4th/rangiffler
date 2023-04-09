@@ -9,38 +9,45 @@ option java_package = "org.grpc.rangiffler.grpc.users";
 option java_outer_classname = "RangifflerUsersProto";
 
 service RangifflerUserService {
-  rpc GetAllUsers (google.protobuf.Empty) returns (UsersResponse);
-  rpc GetCurrentUser (google.protobuf.Empty) returns (UserResponse);
-  rpc GetFriends (google.protobuf.Empty) returns (UsersResponse);
-  rpc SendInvitation (UserRequest) returns (UserResponse);
-  rpc AcceptInvitation (UserRequest) returns (UserResponse);
-  rpc DeclineInvitation (UserRequest) returns (UserResponse);
-  rpc RemoveUserFromFriends (UserRequest) returns (UserResponse);
-  rpc UpdateCurrentUser (UserRequest) returns (UserResponse);
-  rpc GetInvitations (google.protobuf.Empty) returns (UsersResponse);
+  rpc GetAllUsers(UsernameRequest) returns (AllUsersResponse);
+  rpc GetCurrentUser(UsernameRequest) returns (UserResponse);
+  rpc UpdateCurrentUser(UserRequest) returns (UserResponse);
+  rpc GetFriends(UsernameRequest) returns (AllUsersResponse);
+  rpc GetInvitations(UsernameRequest) returns (AllUsersResponse);
+  rpc SendInvitation(InvitationRequest) returns (UserResponse);
+  rpc RemoveUserFromFriends(InvitationRequest) returns (UserResponse);
+  rpc AcceptInvitation(InvitationRequest) returns (UserResponse);
+  rpc DeclineInvitation(InvitationRequest) returns (UserResponse);
 }
 
-message UsersResponse {
+message UsernameRequest {
+  string username = 1;
+}
+
+message AllUsersResponse {
   repeated User users = 1;
 }
+
 message User {
   string id = 1;
   string username = 2;
-  string first_name = 3;
-  string last_name = 4;
+  string firstname = 3;
+  string lastname = 4;
   string avatar = 5;
-  FriendStatus friend_status = 6;
-}
-
-message UserRequest {
-  string username = 1;
-  string first_name = 2;
-  string last_name = 3;
-  string avatar = 4;
+  FriendStatus friendStatus = 6;
 }
 
 message UserResponse {
   User user = 1;
+}
+
+message UserRequest {
+  User user = 1;
+}
+
+message InvitationRequest {
+  string username = 1;
+  User friend = 2;
 }
 
 enum FriendStatus {
