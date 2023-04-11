@@ -3,12 +3,14 @@ package org.rangiffler.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.grpc.rangiffler.grpc.geo.Country;
 
 import java.util.UUID;
 
 @Data
 @Builder
+@EqualsAndHashCode
 public class CountryJson {
 
     @JsonProperty("id")

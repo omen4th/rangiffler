@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +25,24 @@ public class RegisterController {
 
     private static final String REGISTRATION_VIEW_NAME = "register";
     private static final String MODEL_USERNAME_ATTR = "username";
+    private static final String MODEL_REG_FORM_ATTR = "registrationModel";
+    private static final String MODEL_FRONT_URI_ATTR = "frontUri";
     private static final String REG_MODEL_ERROR_BEAN_NAME = "org.springframework.validation.BindingResult.registrationModel";
 
     private final UserService userService;
+    private final String rangifflerClientUri;
 
     @Autowired
-    public RegisterController(UserService userService) {
+    public RegisterController(UserService userService,
+                              @Value("${rangiffler-client.base-uri}") String rangifflerClientUri) {
         this.userService = userService;
+        this.rangifflerClientUri = rangifflerClientUri;
     }
 
     @GetMapping("/register")
     public String getRegisterPage(Model model) {
-        model.addAttribute("registrationModel", new RegistrationModel());
+        model.addAttribute(MODEL_REG_FORM_ATTR, new RegistrationModel());
+        model.addAttribute(MODEL_FRONT_URI_ATTR, rangifflerClientUri + "/redirect");
         return REGISTRATION_VIEW_NAME;
     }
 
@@ -58,6 +65,7 @@ public class RegisterController {
                 );
             }
         }
+        model.addAttribute(MODEL_FRONT_URI_ATTR, rangifflerClientUri + "/redirect");
         return REGISTRATION_VIEW_NAME;
     }
 

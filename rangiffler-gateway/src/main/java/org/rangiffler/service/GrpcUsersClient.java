@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static org.rangiffler.model.UserJson.toGrpcMessage;
+
 @Component
 public class GrpcUsersClient {
 
@@ -49,7 +51,7 @@ public class GrpcUsersClient {
     public @Nonnull UserJson updateCurrentUser(UserJson user) {
         try {
             return UserJson.fromGrpcMessage(rangifflerUserServiceStub
-                    .updateCurrentUser(UserRequest.newBuilder().setUser(user.toGrpcMessage()).build())
+                    .updateCurrentUser(UserRequest.newBuilder().setUser(toGrpcMessage(user)).build())
                     .getUser()
             );
         } catch (StatusRuntimeException e) {
@@ -89,7 +91,7 @@ public class GrpcUsersClient {
             return UserJson.fromGrpcMessage(rangifflerUserServiceStub
                     .sendInvitation(InvitationRequest.newBuilder()
                             .setUsername(username)
-                            .setFriend(friend.toGrpcMessage())
+                            .setFriend(toGrpcMessage(friend))
                             .build())
                     .getUser()
             );
@@ -104,7 +106,7 @@ public class GrpcUsersClient {
             return UserJson.fromGrpcMessage(rangifflerUserServiceStub
                     .removeUserFromFriends(InvitationRequest.newBuilder()
                             .setUsername(username)
-                            .setFriend(friend.toGrpcMessage())
+                            .setFriend(toGrpcMessage(friend))
                             .build())
                     .getUser()
             );
@@ -120,7 +122,7 @@ public class GrpcUsersClient {
             return UserJson.fromGrpcMessage(rangifflerUserServiceStub
                     .acceptInvitation(InvitationRequest.newBuilder()
                             .setUsername(username)
-                            .setFriend(friend.toGrpcMessage())
+                            .setFriend(toGrpcMessage(friend))
                             .build())
                     .getUser()
             );
@@ -135,7 +137,7 @@ public class GrpcUsersClient {
             return UserJson.fromGrpcMessage(rangifflerUserServiceStub
                     .declineInvitation(InvitationRequest.newBuilder()
                             .setUsername(username)
-                            .setFriend(friend.toGrpcMessage())
+                            .setFriend(toGrpcMessage(friend))
                             .build())
                     .getUser()
             );

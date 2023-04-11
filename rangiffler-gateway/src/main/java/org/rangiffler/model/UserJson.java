@@ -40,14 +40,14 @@ public class UserJson {
                 .build();
     }
 
-    public User toGrpcMessage() {
+    public static User toGrpcMessage(UserJson userJson) {
         return User.newBuilder()
-                .setId(id.toString())
-                .setUsername(username)
-                .setFirstname(firstname)
-                .setLastname(lastname)
-                .setAvatar(avatar)
-                .setFriendStatus(org.grpc.rangiffler.grpc.users.FriendStatus.valueOf(friendStatus.name()))
+                .setId(userJson.getId().toString())
+                .setUsername(userJson.getUsername())
+                .setFirstname(userJson.getFirstname())
+                .setLastname(userJson.getLastname())
+                .setAvatar(userJson.getAvatar())
+                .setFriendStatus(org.grpc.rangiffler.grpc.users.FriendStatus.valueOf(userJson.getFriendStatus().name()))
                 .build();
     }
 }
