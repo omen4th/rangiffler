@@ -139,6 +139,9 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
         currentUser.removeFriends(friendToRemoveEntity);
         currentUser.removeInvites(friendToRemoveEntity);
         userRepository.save(currentUser);
+        friendToRemoveEntity.removeFriends(currentUser);
+        friendToRemoveEntity.removeInvites(currentUser);
+        userRepository.save(friendToRemoveEntity);
         friendToRemove = UserGrpcMessage.fromEntity(friendToRemoveEntity, FriendStatus.NOT_FRIEND);
 
         UserResponse response = UserResponse.newBuilder().setUser(toGrpcMessage(friendToRemove)).build();
