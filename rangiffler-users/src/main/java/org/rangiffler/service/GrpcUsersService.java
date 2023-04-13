@@ -10,7 +10,6 @@ import org.rangiffler.model.FriendStatus;
 import org.rangiffler.model.UserGrpcMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.rangiffler.model.UserGrpcMessage.*;
@@ -201,7 +200,7 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
         UserEntity currentUserEntity = userRepository.findByUsername(username);
         UserEntity friendToDeclineEntity = userRepository.findByUsername(friendToDecline.getUsername());
 
-        friendToDeclineEntity.removeFriends(friendToDeclineEntity);
+        friendToDeclineEntity.removeFriends(currentUserEntity);
         currentUserEntity.removeFriends(friendToDeclineEntity);
         userRepository.save(currentUserEntity);
         userRepository.save(friendToDeclineEntity);
