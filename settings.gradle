@@ -4,3 +4,5 @@ include 'rangiffler-auth'
 include 'rangiffler-grpc-common'
 include 'rangiffler-geo'
 include 'rangiffler-users'
+include 'rangiffler-photo'
+

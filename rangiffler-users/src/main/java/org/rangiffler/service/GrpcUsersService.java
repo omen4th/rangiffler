@@ -33,25 +33,17 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
             List<FriendsEntity> receivedInvites = user.getInvites();
 
             if (!sendInvites.isEmpty() || !receivedInvites.isEmpty()) {
-                Optional<FriendsEntity> inviteToMe = sendInvites.stream()
-                        .filter(i -> i.getFriend().getUsername().equals(username))
-                        .findFirst();
+                Optional<FriendsEntity> inviteToMe = sendInvites.stream().filter(i -> i.getFriend().getUsername().equals(username)).findFirst();
 
-                Optional<FriendsEntity> inviteFromMe = receivedInvites.stream()
-                        .filter(i -> i.getUser().getUsername().equals(username))
-                        .findFirst();
+                Optional<FriendsEntity> inviteFromMe = receivedInvites.stream().filter(i -> i.getUser().getUsername().equals(username)).findFirst();
 
                 if (inviteToMe.isPresent()) {
                     FriendsEntity invite = inviteToMe.get();
-                    result.put(user.getId(), fromEntity(user, invite.isPending()
-                            ? FriendStatus.INVITATION_RECEIVED
-                            : FriendStatus.FRIEND));
+                    result.put(user.getId(), fromEntity(user, invite.isPending() ? FriendStatus.INVITATION_RECEIVED : FriendStatus.FRIEND));
                 }
                 if (inviteFromMe.isPresent()) {
                     FriendsEntity invite = inviteFromMe.get();
-                    result.put(user.getId(), fromEntity(user, invite.isPending()
-                            ? FriendStatus.INVITATION_SENT
-                            : FriendStatus.FRIEND));
+                    result.put(user.getId(), fromEntity(user, invite.isPending() ? FriendStatus.INVITATION_SENT : FriendStatus.FRIEND));
                 }
             }
             if (!result.containsKey(user.getId())) {
@@ -60,9 +52,7 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
         }
         List<UserGrpcMessage> all = new ArrayList<>(result.values());
 
-        AllUsersResponse response = AllUsersResponse.newBuilder()
-                .addAllUsers(all.stream().map(UserGrpcMessage::toGrpcMessage).toList())
-                .build();
+        AllUsersResponse response = AllUsersResponse.newBuilder().addAllUsers(all.stream().map(UserGrpcMessage::toGrpcMessage).toList()).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -105,16 +95,9 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
     public void getFriends(UsernameRequest request, StreamObserver<AllUsersResponse> responseObserver) {
         String username = request.getUsername();
 
-        List<UserGrpcMessage> friends = userRepository.findByUsername(username)
-                .getFriends()
-                .stream()
-                .filter(fe -> !fe.isPending())
-                .map(fe -> fromEntity(fe.getFriend(), FriendStatus.FRIEND))
-                .toList();
+        List<UserGrpcMessage> friends = userRepository.findByUsername(username).getFriends().stream().filter(fe -> !fe.isPending()).map(fe -> fromEntity(fe.getFriend(), FriendStatus.FRIEND)).toList();
 
-        AllUsersResponse response = AllUsersResponse.newBuilder()
-                .addAllUsers(friends.stream().map(UserGrpcMessage::toGrpcMessage).toList())
-                .build();
+        AllUsersResponse response = AllUsersResponse.newBuilder().addAllUsers(friends.stream().map(UserGrpcMessage::toGrpcMessage).toList()).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -123,16 +106,9 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
     public void getInvitations(UsernameRequest request, StreamObserver<AllUsersResponse> responseObserver) {
         String username = request.getUsername();
 
-        List<UserGrpcMessage> invitations = userRepository.findByUsername(username)
-                .getInvites()
-                .stream()
-                .filter(FriendsEntity::isPending)
-                .map(fe -> UserGrpcMessage.fromEntity(fe.getUser(), FriendStatus.INVITATION_RECEIVED))
-                .toList();
+        List<UserGrpcMessage> invitations = userRepository.findByUsername(username).getInvites().stream().filter(FriendsEntity::isPending).map(fe -> UserGrpcMessage.fromEntity(fe.getUser(), FriendStatus.INVITATION_RECEIVED)).toList();
 
-        AllUsersResponse response = AllUsersResponse.newBuilder()
-                .addAllUsers(invitations.stream().map(UserGrpcMessage::toGrpcMessage).toList())
-                .build();
+        AllUsersResponse response = AllUsersResponse.newBuilder().addAllUsers(invitations.stream().map(UserGrpcMessage::toGrpcMessage).toList()).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -177,11 +153,7 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
         UserEntity currentUserEntity = userRepository.findByUsername(username);
         UserEntity inviteUserEntity = userRepository.findByUsername(inviteUser.getUsername());
 
-        FriendsEntity invite = currentUserEntity.getInvites()
-                .stream()
-                .filter(fe -> fe.getUser().getUsername().equals(inviteUserEntity.getUsername()))
-                .findFirst()
-                .orElseThrow();
+        FriendsEntity invite = currentUserEntity.getInvites().stream().filter(fe -> fe.getUser().getUsername().equals(inviteUserEntity.getUsername())).findFirst().orElseThrow();
 
         invite.setPending(false);
         currentUserEntity.addFriends(false, inviteUserEntity);
