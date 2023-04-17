@@ -4,6 +4,7 @@ import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.grpc.rangiffler.grpc.geo.*;
+import org.grpc.rangiffler.grpc.country.Country;
 import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.repository.CountryRepository;
 

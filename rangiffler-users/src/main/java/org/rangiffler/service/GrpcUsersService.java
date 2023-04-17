@@ -3,6 +3,7 @@ package org.rangiffler.service;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.grpc.rangiffler.grpc.users.*;
+import org.grpc.rangiffler.grpc.username.UsernameRequest;
 import org.rangiffler.data.FriendsEntity;
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.data.repository.UserRepository;

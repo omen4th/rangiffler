@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
+import "rangiffler-country.proto";
 
 package org.grpc.rangiffler;
 
@@ -15,12 +16,6 @@ service RangifflerGeoService {
 
 message AllCountriesResponse {
   repeated Country allCountries = 1;
-}
-
-message Country {
-  string id = 1;
-  string code = 2;
-  string name = 3;
 }
 
 message CountryRequest {

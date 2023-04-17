@@ -4,6 +4,7 @@ import io.grpc.StatusRuntimeException;
 import jakarta.annotation.Nonnull;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.grpc.rangiffler.grpc.users.*;
+import org.grpc.rangiffler.grpc.username.UsernameRequest;
 import org.rangiffler.model.UserJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

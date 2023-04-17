@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "rangiffler-username.proto";
+
 package org.grpc.rangiffler;
 
 option java_multiple_files = true;
@@ -16,10 +18,6 @@ service RangifflerUserService {
   rpc RemoveUserFromFriends(InvitationRequest) returns (UserResponse);
   rpc AcceptInvitation(InvitationRequest) returns (UserResponse);
   rpc DeclineInvitation(InvitationRequest) returns (UserResponse);
-}
-
-message UsernameRequest {
-  string username = 1;
 }
 
 message AllUsersResponse {

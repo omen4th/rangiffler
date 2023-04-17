@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package org.grpc.rangiffler;
+
+option java_multiple_files = true;
+option java_package = "org.grpc.rangiffler.grpc.username";
+option java_outer_classname = "RangifflerUsernameProto";
+
+message UsernameRequest {
+  string username = 1;
+}

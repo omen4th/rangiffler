@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.grpc.rangiffler.grpc.geo.Country;
+import org.grpc.rangiffler.grpc.country.Country;
 
 import java.util.UUID;
 
@@ -27,6 +27,14 @@ public class CountryJson {
                 .id(UUID.fromString((countryMessage.getId())))
                 .code(countryMessage.getCode())
                 .name(countryMessage.getName())
+                .build();
+    }
+
+    public static Country toGrpcMessage(CountryJson countryJson) {
+        return Country.newBuilder()
+                .setId(countryJson.getId().toString())
+                .setCode(countryJson.getCode())
+                .setName(countryJson.getName())
                 .build();
     }
 }
