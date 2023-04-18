@@ -19,7 +19,7 @@ import static org.rangiffler.model.UserJson.toGrpcMessage;
 @Component
 public class GrpcUsersClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcGeoClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GrpcUsersClient.class);
 
     @GrpcClient("grpcUsersClient")
     private RangifflerUserServiceGrpc.RangifflerUserServiceBlockingStub rangifflerUserServiceStub;

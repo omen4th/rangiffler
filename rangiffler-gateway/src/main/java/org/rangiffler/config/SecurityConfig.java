@@ -27,11 +27,6 @@ public class SecurityConfig {
                 .oauth2ResourceServer()
                 .jwt();
 
-//        http.authorizeHttpRequests(
-//                authorize ->
-//                        authorize.anyRequest().permitAll()
-//        ).csrf().disable();
-
         return http.build();
     }
 }
