@@ -10,7 +10,7 @@ grpc:
 
 spring:
   application:
-    name: niffler-geo
+    name: rangiffler-geo
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rangiffler-geo'
     hikari:

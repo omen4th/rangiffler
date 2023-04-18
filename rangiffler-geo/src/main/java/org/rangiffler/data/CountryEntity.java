@@ -18,9 +18,9 @@ public class CountryEntity {
     @Column(name = "id", nullable = false, columnDefinition = "UUID default gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true, length = 50)
     private String name;
 
-    @Column(name = "code", unique = true, nullable = false, length = 3)
+    @Column(unique = true, nullable = false, length = 3)
     private String code;
 }

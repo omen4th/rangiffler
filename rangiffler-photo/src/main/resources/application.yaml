@@ -7,10 +7,17 @@ server:
 grpc:
   server:
     port: 8092
+  client:
+    grpcUsersClient:
+      address: 'static://localhost:8093'
+      negotiationType: PLAINTEXT
+    grpcGeoClient:
+      address: 'static://localhost:8094'
+      negotiationType: PLAINTEXT
 
 spring:
   application:
-    name: niffler-geo
+    name: rangiffler-photo
   datasource:
     url: 'jdbc:postgresql://localhost:5432/rangiffler-photo'
     hikari:

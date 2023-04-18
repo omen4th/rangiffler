@@ -14,8 +14,10 @@ repositories {
 dependencies {
     implementation project(':rangiffler-grpc-common')
 
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
+    implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
     runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'

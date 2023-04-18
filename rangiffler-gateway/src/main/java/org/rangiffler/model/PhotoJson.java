@@ -39,7 +39,6 @@ public class PhotoJson {
 
     public static Photo toGrpcMessage(PhotoJson photoJson) {
         return Photo.newBuilder()
-                .setId(photoJson.getId().toString())
                 .setCountry(CountryJson.toGrpcMessage(photoJson.getCountryJson()))
                 .setPhoto(photoJson.getPhoto())
                 .setDescription(photoJson.getDescription())
