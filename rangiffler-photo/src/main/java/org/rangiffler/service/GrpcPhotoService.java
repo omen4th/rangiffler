@@ -12,6 +12,7 @@ import org.rangiffler.model.PhotoGrpcMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.rangiffler.model.PhotoGrpcMessage.*;
 
@@ -20,6 +21,8 @@ public class GrpcPhotoService extends RangifflerPhotoServiceGrpc.RangifflerPhoto
     private final PhotoRepository photoRepository;
     private final GrpcGeoClient geoClient;
     private final GrpcUsersClient usersClient;
+
+    private static final Empty EMPTY = Empty.getDefaultInstance();
 
     @Autowired
     public GrpcPhotoService(PhotoRepository photoRepository, GrpcGeoClient geoClient, GrpcUsersClient usersClient) {
@@ -66,7 +69,17 @@ public class GrpcPhotoService extends RangifflerPhotoServiceGrpc.RangifflerPhoto
 
     @Override
     public void editUserPhoto(PhotoRequest request, StreamObserver<PhotoResponse> responseObserver) {
-        super.editUserPhoto(request, responseObserver);
+        PhotoGrpcMessage photo = fromGrpcMessage(request.getPhoto());
+
+        PhotoEntity photoEntity = photoRepository.findById(photo.getId()).orElse(null);
+        photoEntity.setDescription(request.getPhoto().getDescription());
+        photoEntity.setCountry(request.getPhoto().getCountry().getCode());
+
+        PhotoResponse response =
+                PhotoResponse.newBuilder().setPhoto(toGrpcMessage(
+                        fromEntity(photoRepository.save(photoEntity), photo.getCountry()))).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     @Override
@@ -91,7 +104,9 @@ public class GrpcPhotoService extends RangifflerPhotoServiceGrpc.RangifflerPhoto
 
     @Override
     public void deleteUserPhoto(PhotoIdRequest request, StreamObserver<Empty> responseObserver) {
-        super.deleteUserPhoto(request, responseObserver);
+        photoRepository.deleteById(UUID.fromString(request.getId()));
+        responseObserver.onNext(EMPTY);
+        responseObserver.onCompleted();
     }
 
 }

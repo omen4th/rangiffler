@@ -2,6 +2,7 @@ package org.rangiffler.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import lombok.Builder;
@@ -38,11 +39,19 @@ public class PhotoJson {
     }
 
     public static Photo toGrpcMessage(PhotoJson photoJson) {
-        return Photo.newBuilder()
+        Photo.Builder photoBuilder = Photo.newBuilder()
                 .setCountry(CountryJson.toGrpcMessage(photoJson.getCountryJson()))
                 .setPhoto(photoJson.getPhoto())
-                .setDescription(photoJson.getDescription())
-                .setUsername(photoJson.getUsername())
-                .build();
+                .setUsername(photoJson.getUsername());
+
+        if (photoJson.getId() != null) {
+            photoBuilder.setId(photoJson.getId().toString());
+        }
+
+        if (photoJson.getDescription() != null) {
+            photoBuilder.setDescription(photoJson.getDescription());
+        }
+
+        return photoBuilder.build();
     }
 }

@@ -34,12 +34,17 @@ public class PhotoGrpcMessage {
     }
 
     public static PhotoGrpcMessage fromGrpcMessage(Photo photoMessage) {
-        return PhotoGrpcMessage.builder()
+        PhotoGrpcMessage.PhotoGrpcMessageBuilder builder = PhotoGrpcMessage.builder()
                 .country(CountryGrpcMessage.fromGrpcMessage(photoMessage.getCountry()))
                 .photo(photoMessage.getPhoto().getBytes())
                 .description(photoMessage.getDescription())
-                .username(photoMessage.getUsername())
-                .build();
+                .username(photoMessage.getUsername());
+
+        if (!photoMessage.getId().isEmpty()) {
+            builder.id(UUID.fromString(photoMessage.getId()));
+        }
+
+        return builder.build();
     }
 
     public static PhotoGrpcMessage fromEntity(PhotoEntity entity, CountryGrpcMessage countryGrpcMessage) {

@@ -67,7 +67,7 @@ public class GrpcPhotoClient {
     public @Nonnull PhotoJson editPhoto(PhotoJson photoJson) {
         try {
             return PhotoJson.fromGrpcMessage(rangifflerPhotoServiceStub
-                    .addUserPhoto(PhotoRequest.newBuilder().setPhoto(toGrpcMessage(photoJson)).build())
+                    .editUserPhoto(PhotoRequest.newBuilder().setPhoto(toGrpcMessage(photoJson)).build())
                     .getPhoto()
             );
         } catch (StatusRuntimeException e) {
