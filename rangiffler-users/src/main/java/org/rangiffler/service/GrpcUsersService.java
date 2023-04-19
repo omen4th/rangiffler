@@ -5,7 +5,9 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.grpc.rangiffler.grpc.users.*;
 import org.grpc.rangiffler.grpc.username.UsernameRequest;
 import org.rangiffler.data.FriendsEntity;
+import org.rangiffler.data.FriendsId;
 import org.rangiffler.data.UserEntity;
+import org.rangiffler.data.repository.FriendsRepository;
 import org.rangiffler.data.repository.UserRepository;
 import org.rangiffler.model.FriendStatus;
 import org.rangiffler.model.UserGrpcMessage;
@@ -134,15 +136,12 @@ public class GrpcUsersService extends RangifflerUserServiceGrpc.RangifflerUserSe
     public void removeUserFromFriends(InvitationRequest request, StreamObserver<UserResponse> responseObserver) {
         String username = request.getUsername();
         UserGrpcMessage friendToRemove = fromGrpcMessage(request.getFriend());
-        UserEntity currentUser = userRepository.findByUsername(username);
+        UserEntity currentUserEntity = userRepository.findByUsername(username);
         UserEntity friendToRemoveEntity = userRepository.findByUsername(friendToRemove.getUsername());
 
-        currentUser.removeFriends(friendToRemoveEntity);
-        currentUser.removeInvites(friendToRemoveEntity);
-        userRepository.save(currentUser);
-        friendToRemoveEntity.removeFriends(currentUser);
-        friendToRemoveEntity.removeInvites(currentUser);
-        userRepository.save(friendToRemoveEntity);
+        currentUserEntity.removeFriends(friendToRemoveEntity);
+        currentUserEntity.removeInvites(friendToRemoveEntity);
+        userRepository.save(currentUserEntity);
         friendToRemove = UserGrpcMessage.fromEntity(friendToRemoveEntity, FriendStatus.NOT_FRIEND);
 
         UserResponse response = UserResponse.newBuilder().setUser(toGrpcMessage(friendToRemove)).build();
