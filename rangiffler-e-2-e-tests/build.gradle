@@ -13,7 +13,7 @@ repositories {
 
 def junitVersion = "5.9.2",
     slf4jVersion = "2.0.6",
-    selenideVersion = "6.12.4",
+    selenideVersion = "6.13.0",
     postgresqlVersion = "42.5.3",
     hibernateCoreVersion = "6.1.7.Final",
     springSecurityCryptoVersion = "6.0.1",
@@ -56,6 +56,7 @@ dependencies {
         exclude group: "org.junit.platform"
         exclude group: "org.junit.jupiter"
     }
+    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
     testImplementation "io.qameta.allure:allure-grpc:${allureVersion}"
 
     compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0
