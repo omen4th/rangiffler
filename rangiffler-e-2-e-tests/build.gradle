@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "6.6.1"
-    id 'io.qameta.allure' version '2.9.6'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'org.rangiffler'
@@ -20,7 +20,8 @@ def junitVersion = "5.9.2",
     protobufVersion = '3.21.12',
     grpcVersion = '1.52.1',
     allureVersion = "2.21.0",
-    javaFakerVersion = "1.0.2"
+    javaFakerVersion = "1.0.2",
+    sqlFormatterVersion = "2.0.3"
 
 allure {
     report {
@@ -36,13 +37,13 @@ allure {
     }
 }
 
-
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
     testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
     testImplementation "com.codeborne:selenide:$selenideVersion"
     testImplementation "org.postgresql:postgresql:$postgresqlVersion"
     testImplementation "org.hibernate:hibernate-core:$hibernateCoreVersion"
+    testImplementation 'p6spy:p6spy:3.9.1'
     testImplementation "org.springframework.security:spring-security-crypto:$springSecurityCryptoVersion"
     testImplementation "com.codeborne:selenide:$selenideVersion"
     testImplementation "com.github.javafaker:javafaker:${javaFakerVersion}"
@@ -58,6 +59,8 @@ dependencies {
     }
     testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
     testImplementation "io.qameta.allure:allure-grpc:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-attachments:${allureVersion}"
+    testImplementation "com.github.vertical-blank:sql-formatter:${sqlFormatterVersion}"
 
     compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0
 

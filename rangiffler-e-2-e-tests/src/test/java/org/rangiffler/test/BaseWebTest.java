@@ -9,7 +9,7 @@ public class BaseWebTest {
     @BeforeEach
     void setup() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
-                .screenshots(false)
+                .screenshots(true)
                 .savePageSource(false)
         );
     }
