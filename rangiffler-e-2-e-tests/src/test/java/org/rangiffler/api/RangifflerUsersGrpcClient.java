@@ -7,7 +7,7 @@ import io.qameta.allure.grpc.AllureGrpc;
 import org.grpc.rangiffler.grpc.users.RangifflerUserServiceGrpc;
 import org.rangiffler.model.UserGrpc;
 
-public class UsersGrpcClient extends GrpcClient {
+public class RangifflerUsersGrpcClient extends GrpcClient {
     private static final Channel CHANNEL = ManagedChannelBuilder
             .forAddress(CFG.usersGrpcAddress(), CFG.usersGrpcPort())
             .intercept(new AllureGrpc())
@@ -17,6 +17,19 @@ public class UsersGrpcClient extends GrpcClient {
     private final RangifflerUserServiceGrpc.RangifflerUserServiceBlockingStub rangifflerUserServiceStub =
             RangifflerUserServiceGrpc.newBlockingStub(CHANNEL);
 
-//    @Step("Send request GetCurrentUser to rangiffler-users")
-//    public UserGrpc getCurrentUser()
+    @Step("Send request GetCurrentUser to rangiffler-users")
+    public UserGrpc getCurrentUser(String username) {
+
+        return null;
+    }
+
+    @Step("Send request SendInvitation to rangiffler-users")
+    public UserGrpc sendInvitation(String username, UserGrpc friend) {
+        return null;
+    }
+
+    @Step("Send request AcceptInvitation to rangiffler-users")
+    public UserGrpc acceptInvitation(String username, UserGrpc friend) {
+        return null;
+    }
 }

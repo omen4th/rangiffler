@@ -5,6 +5,8 @@ import lombok.*;
 import org.grpc.rangiffler.grpc.users.User;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,6 +23,9 @@ public class UserGrpc {
     private byte[] avatar;
     private FriendStatus friendStatus;
     private String password;
+
+    private List<UserGrpc> friendsJsons = new ArrayList<>();
+    private List<UserGrpc> invitationsJsons = new ArrayList<>();
 
     public static User toGrpcMessage(UserGrpc userGrpc) {
         User.Builder userBuilder = User.newBuilder()
