@@ -6,6 +6,9 @@ import io.qameta.allure.Epic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.rangiffler.jupiter.annotation.GenerateUser;
+import org.rangiffler.jupiter.annotation.User;
+import org.rangiffler.model.UserGrpc;
 import org.rangiffler.page.LoginPage;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.WelcomePage;
@@ -20,10 +23,11 @@ public class LoginTest extends BaseWebTest {
     @AllureId("1001")
     @DisplayName("WEB: The main page should be displayed after a user logs in")
     @Tag("WEB")
-    void mainPageShouldBeDisplayedAfterSuccessLogin() {
+    @GenerateUser()
+    void mainPageShouldBeDisplayedAfterSuccessLogin(@User UserGrpc user) {
         Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
-                .fillLoginPage("Kate", "pass")
+                .fillLoginPage(user.getUsername(), user.getPassword())
                 .submit(new MainPage())
                 .waitForPageLoaded();
     }
@@ -32,10 +36,11 @@ public class LoginTest extends BaseWebTest {
     @AllureId("1002")
     @DisplayName("WEB: When user enters incorrect password, they remain unauthorized")
     @Tag("WEB")
-    void userShouldStayOnLoginPageAfterLoginWithBadPasswordCredentials() {
+    @GenerateUser()
+    void userShouldStayOnLoginPageAfterLoginWithBadPasswordCredentials(@User UserGrpc user) {
         LoginPage loginPage = Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
-                .fillLoginPage("Kate", "BAD pass");
+                .fillLoginPage(user.getUsername(), "BAD" + user.getPassword());
 
         loginPage.submit(loginPage)
                 .checkError(BAD_CREDENTIALS.content);
@@ -45,10 +50,11 @@ public class LoginTest extends BaseWebTest {
     @AllureId("1003")
     @DisplayName("WEB: When user enters incorrect login, they remain unauthorized")
     @Tag("WEB")
-    void userShouldStayOnLoginPageAfterLoginWithBadLoginCredentials() {
+    @GenerateUser()
+    void userShouldStayOnLoginPageAfterLoginWithBadLoginCredentials(@User UserGrpc user) {
         LoginPage loginPage = Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
-                .fillLoginPage("KateBad", "pass");
+                .fillLoginPage("BAD" + user.getUsername(), user.getPassword());
 
         loginPage.submit(loginPage)
                 .checkError(BAD_CREDENTIALS.content);

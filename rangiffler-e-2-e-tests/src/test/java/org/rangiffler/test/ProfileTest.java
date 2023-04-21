@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.rangiffler.jupiter.annotation.ApiLogin;
+import org.rangiffler.jupiter.annotation.GenerateUser;
 import org.rangiffler.jupiter.annotation.User;
 import org.rangiffler.model.UserGrpc;
 import org.rangiffler.page.WelcomePage;
@@ -21,13 +22,14 @@ public class ProfileTest extends BaseWebTest {
     @AllureId("3001")
     @DisplayName("WEB: User can edit all fields in the profile")
     @Tag("WEB")
-    @ApiLogin(username = "Kate", password = "pass")
-    void shouldUpdateProfileWithAllFieldsSet() {
+    @ApiLogin(rangifflerUser = @GenerateUser)
+    void shouldUpdateProfileWithAllFieldsSet(@User UserGrpc user) {
 
-
+        String username = user.getUsername();
         Selenide.open(WelcomePage.URL, WelcomePage.class);
 
-        sleep(3000);
+        System.out.println(username);
+        sleep(10000);
 
     }
 }

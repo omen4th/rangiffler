@@ -6,6 +6,9 @@ import io.qameta.allure.Epic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.rangiffler.jupiter.annotation.GenerateUser;
+import org.rangiffler.jupiter.annotation.User;
+import org.rangiffler.model.UserGrpc;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.WelcomePage;
 
@@ -41,8 +44,9 @@ public class RegistrationTest extends BaseWebTest {
     @AllureId("2002")
     @DisplayName("WEB: Error occurs during registration if user with such username already exists")
     @Tag("WEB")
-    void shouldNotRegisterUserWithExistingUsername() {
-        String username = "Test";
+    @GenerateUser()
+    void shouldNotRegisterUserWithExistingUsername(@User UserGrpc existingUser) {
+        String username = existingUser.getUsername();
         String password = generateRandomPassword();
         Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .waitForPageLoaded()

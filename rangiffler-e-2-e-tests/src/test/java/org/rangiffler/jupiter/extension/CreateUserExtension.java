@@ -93,7 +93,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
     private UserGrpc apiRegister(String username, String password) throws Exception {
         authClient.authorize();
         Response<Void> res = authClient.register(username, password);
-        if (res.code() != 201) {
+        if (res.code() != 200) {
             throw new RuntimeException("User is not registered");
         }
         UserGrpc currentUser = userdataClient.getCurrentUser(username);

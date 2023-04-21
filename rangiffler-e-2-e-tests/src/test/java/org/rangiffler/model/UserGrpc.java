@@ -24,7 +24,9 @@ public class UserGrpc {
     private FriendStatus friendStatus;
     private String password;
 
+    @Builder.Default
     private List<UserGrpc> friendsJsons = new ArrayList<>();
+    @Builder.Default
     private List<UserGrpc> invitationsJsons = new ArrayList<>();
 
     public static User toGrpcMessage(UserGrpc userGrpc) {
