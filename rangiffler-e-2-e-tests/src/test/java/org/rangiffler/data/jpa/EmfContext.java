@@ -2,7 +2,7 @@ package org.rangiffler.data.jpa;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import org.rangiffler.DataBase;
+import org.rangiffler.data.DataBase;
 
 import java.util.Collection;
 import java.util.HashMap;

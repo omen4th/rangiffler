@@ -18,5 +18,9 @@ public interface Config {
 
     String gatewayUrl();
 
+    String usersGrpcAddress();
+
+    int usersGrpcPort();
+
     String databaseAddress();
 }

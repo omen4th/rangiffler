@@ -22,6 +22,16 @@ public class LocalConfig implements Config {
         return "http://127.0.0.1:8080/";
     }
 
+    @Override
+    public String usersGrpcAddress() {
+        return "127.0.0.1";
+    }
+
+    @Override
+    public int usersGrpcPort() {
+        return 8093;
+    }
+
     public String databaseAddress() {
         return "127.0.0.1:5432";
     }

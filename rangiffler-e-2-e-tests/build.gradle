@@ -21,7 +21,9 @@ def junitVersion = "5.9.2",
     grpcVersion = '1.52.1',
     allureVersion = "2.21.0",
     javaFakerVersion = "1.0.2",
-    sqlFormatterVersion = "2.0.3"
+    sqlFormatterVersion = "2.0.3",
+    retrofitVersion = "2.9.0",
+    loggingInterceptorVersion = "3.14.9"
 
 allure {
     report {
@@ -51,6 +53,9 @@ dependencies {
     testImplementation "io.grpc:grpc-stub:${grpcVersion}"
     testImplementation "io.grpc:grpc-netty:${grpcVersion}"
     testImplementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+    testImplementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    testImplementation "com.squareup.retrofit2:converter-jackson:${retrofitVersion}"
+    testImplementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}"
 
     testImplementation("io.qameta.allure:allure-junit5:${allureVersion}") {
         exclude group: "org.junit.jupiter-api"
@@ -60,6 +65,7 @@ dependencies {
     testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
     testImplementation "io.qameta.allure:allure-grpc:${allureVersion}"
     testImplementation "io.qameta.allure:allure-attachments:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-okhttp3:${allureVersion}"
     testImplementation "com.github.vertical-blank:sql-formatter:${sqlFormatterVersion}"
 
     compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0

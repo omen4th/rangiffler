@@ -1,4 +1,4 @@
-package org.rangiffler;
+package org.rangiffler.data;
 
 import org.apache.commons.lang3.StringUtils;
 import org.rangiffler.config.Config;
