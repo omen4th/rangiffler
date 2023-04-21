@@ -1,4 +1,4 @@
-package org.rangiffler.api;
+package org.rangiffler.api.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import retrofit2.Call;

@@ -1,8 +1,8 @@
-package org.rangiffler.api.interceptops;
+package org.rangiffler.api.auth.interceptops;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
-import org.rangiffler.api.context.SessionStorageHolder;
+import org.rangiffler.api.auth.context.SessionStorageHolder;
 
 import java.io.IOException;
 

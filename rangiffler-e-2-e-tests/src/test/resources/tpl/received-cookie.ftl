@@ -1,5 +1,5 @@
 <html>
-<#-- @ftlvariable name="data" type="org.rangiffler.api.logging.ReceivedCookieAttachment" -->
+<#-- @ftlvariable name="data" type="org.rangiffler.api.auth.logging.ReceivedCookieAttachment" -->
 <head>
     <meta http-equiv="content-type" content="text/html; charset = UTF-8">
     <script src="https://yastatic.net/jquery/2.2.3/jquery.min.js" crossorigin="anonymous"></script>

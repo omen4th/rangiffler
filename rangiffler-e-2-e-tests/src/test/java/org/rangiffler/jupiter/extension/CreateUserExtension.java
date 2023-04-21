@@ -3,7 +3,7 @@ package org.rangiffler.jupiter.extension;
 import io.qameta.allure.AllureId;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
-import org.rangiffler.api.RangifflerAuthClient;
+import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.api.RangifflerUsersGrpcClient;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;

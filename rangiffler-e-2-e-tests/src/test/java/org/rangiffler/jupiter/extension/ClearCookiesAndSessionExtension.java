@@ -2,8 +2,8 @@ package org.rangiffler.jupiter.extension;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.rangiffler.api.context.CookieHolder;
-import org.rangiffler.api.context.SessionStorageHolder;
+import org.rangiffler.api.auth.context.CookieHolder;
+import org.rangiffler.api.auth.context.SessionStorageHolder;
 
 public class ClearCookiesAndSessionExtension implements AfterTestExecutionCallback {
 

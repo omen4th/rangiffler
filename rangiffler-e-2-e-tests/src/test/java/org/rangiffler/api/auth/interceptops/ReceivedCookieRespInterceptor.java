@@ -1,10 +1,10 @@
-package org.rangiffler.api.interceptops;
+package org.rangiffler.api.auth.interceptops;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
-import org.rangiffler.api.context.CookieHolder;
-import org.rangiffler.api.logging.ReceivedCookieAllureAppender;
-import org.rangiffler.api.logging.ReceivedCookieAttachment;
+import org.rangiffler.api.auth.context.CookieHolder;
+import org.rangiffler.api.auth.logging.ReceivedCookieAllureAppender;
+import org.rangiffler.api.auth.logging.ReceivedCookieAttachment;
 
 import java.io.IOException;
 import java.util.List;

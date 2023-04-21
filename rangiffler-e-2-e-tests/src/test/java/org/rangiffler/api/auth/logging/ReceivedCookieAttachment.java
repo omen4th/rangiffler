@@ -1,4 +1,4 @@
-package org.rangiffler.api.logging;
+package org.rangiffler.api.auth.logging;
 
 import io.qameta.allure.attachment.AttachmentData;
 

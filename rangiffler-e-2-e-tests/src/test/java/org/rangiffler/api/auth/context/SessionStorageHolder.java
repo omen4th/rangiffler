@@ -1,4 +1,4 @@
-package org.rangiffler.api.context;
+package org.rangiffler.api.auth.context;
 
 import org.rangiffler.utils.LoginUtils;
 

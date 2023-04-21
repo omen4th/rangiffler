@@ -1,14 +1,14 @@
-package org.rangiffler.api;
+package org.rangiffler.api.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.qameta.allure.Step;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.rangiffler.api.context.CookieHolder;
-import org.rangiffler.api.context.SessionStorageHolder;
-import org.rangiffler.api.interceptops.AddCookiesReqInterceptor;
-import org.rangiffler.api.interceptops.ExtractCodeFromRespInterceptor;
-import org.rangiffler.api.interceptops.ReceivedCookieRespInterceptor;
+import org.rangiffler.api.auth.context.CookieHolder;
+import org.rangiffler.api.auth.context.SessionStorageHolder;
+import org.rangiffler.api.auth.interceptops.AddCookiesReqInterceptor;
+import org.rangiffler.api.auth.interceptops.ExtractCodeFromRespInterceptor;
+import org.rangiffler.api.auth.interceptops.ReceivedCookieRespInterceptor;
 import org.rangiffler.config.Config;
 import retrofit2.Response;
 import retrofit2.Retrofit;
