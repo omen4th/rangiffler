@@ -25,13 +25,12 @@ public class UserGrpc {
     private String password;
 
     @Builder.Default
-    private List<UserGrpc> friendsJsons = new ArrayList<>();
+    private List<UserGrpc> friendsGrpcList = new ArrayList<>();
     @Builder.Default
-    private List<UserGrpc> invitationsJsons = new ArrayList<>();
+    private List<UserGrpc> invitationsGrpcList = new ArrayList<>();
 
     public static User toGrpcMessage(UserGrpc userGrpc) {
         User.Builder userBuilder = User.newBuilder()
-                .setId(String.valueOf(userGrpc.getId()))
                 .setUsername(userGrpc.getUsername());
 
         if (userGrpc.getFirstname() != null) {
@@ -52,7 +51,6 @@ public class UserGrpc {
 
     public static UserGrpc fromGrpcMessage(User userMessage) {
         return UserGrpc.builder()
-                .id(UUID.fromString((userMessage.getId())))
                 .username(userMessage.getUsername())
                 .firstname(userMessage.getFirstname())
                 .lastname(userMessage.getLastname())

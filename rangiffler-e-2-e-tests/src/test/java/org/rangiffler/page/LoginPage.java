@@ -50,8 +50,8 @@ public class LoginPage extends BasePage<LoginPage> {
     @Step("Check that the page is loaded")
     @Override
     public LoginPage waitForPageLoaded() {
-        usernameInput.should(visible);
-        passwordInput.should(visible);
+        usernameInput.shouldBe(visible);
+        passwordInput.shouldBe(visible);
         return this;
     }
 }

@@ -4,10 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.rangiffler.config.Config;
 
 public enum DataBase {
-    USERDATA("jdbc:postgresql://%s/rangiffler-auth"),
-    AUTH("jdbc:postgresql://%s/rangiffler-geo"),
-    SPEND("jdbc:postgresql://%s/rangiffler-photo"),
-    CURRENCY("jdbc:postgresql://%s/rangiffler-users");
+    AUTH("jdbc:postgresql://%s/rangiffler-auth"),
+    GEO("jdbc:postgresql://%s/rangiffler-geo"),
+    PHOTO("jdbc:postgresql://%s/rangiffler-photo"),
+    USERS("jdbc:postgresql://%s/rangiffler-users");
     private final String url;
 
     DataBase(String url) {

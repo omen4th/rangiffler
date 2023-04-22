@@ -60,9 +60,9 @@ public class RegisterPage extends BasePage<RegisterPage> {
     @Step("Check that the page is loaded")
     @Override
     public RegisterPage waitForPageLoaded() {
-        usernameInput.should(visible);
-        passwordInput.should(visible);
-        passwordSubmitInput.should(visible);
+        usernameInput.shouldBe(visible);
+        passwordInput.shouldBe(visible);
+        passwordSubmitInput.shouldBe(visible);
         return this;
     }
 

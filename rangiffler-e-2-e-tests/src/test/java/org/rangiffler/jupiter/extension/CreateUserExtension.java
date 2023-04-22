@@ -128,7 +128,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 UserGrpc addFriend = new UserGrpc();
                 addFriend.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(invitation.getUsername(), addFriend);
-                createdUser.getInvitationsJsons().add(invitation);
+                createdUser.getInvitationsGrpcList().add(invitation);
             }
         }
     }
@@ -139,7 +139,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             for (int i = 0; i < invitations.count(); i++) {
                 UserGrpc friend = apiRegister(generateRandomUsername(), generateRandomPassword());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
-                createdUser.getInvitationsJsons().add(friend);
+                createdUser.getInvitationsGrpcList().add(friend);
             }
         }
     }
@@ -153,7 +153,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 invitation.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
                 userdataClient.acceptInvitation(friend.getUsername(), invitation);
-                createdUser.getFriendsJsons().add(friend);
+                createdUser.getFriendsGrpcList().add(friend);
             }
         }
     }

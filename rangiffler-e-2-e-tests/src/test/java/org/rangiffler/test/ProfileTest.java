@@ -30,7 +30,7 @@ public class ProfileTest extends BaseWebTest {
 
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .setFirstname(newFirstname)
                 .setLastname(newLastname)
                 .saveProfile();
@@ -38,7 +38,7 @@ public class ProfileTest extends BaseWebTest {
         Selenide.refresh();
 
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .checkFirstname(newFirstname)
                 .checkLastname(newLastname);
     }
@@ -54,7 +54,7 @@ public class ProfileTest extends BaseWebTest {
 
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .setFirstname(newFirstname)
                 .setLastname(newLastname)
                 .saveProfile();
@@ -62,7 +62,7 @@ public class ProfileTest extends BaseWebTest {
         Selenide.refresh();
 
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .checkFirstname(newFirstname)
                 .checkLastname(newLastname);
     }
@@ -77,14 +77,14 @@ public class ProfileTest extends BaseWebTest {
 
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .updateAvatar(avatarPath)
                 .saveProfile();
 
         Selenide.refresh();
 
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .checkAvatar(avatarPath);
     }
 
@@ -98,14 +98,14 @@ public class ProfileTest extends BaseWebTest {
 
         MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .updateAvatar(avatarPath)
                 .saveProfile();
 
         Selenide.refresh();
 
         mainPage.getHeader()
-                .toProfilePage()
+                .openProfilePopup()
                 .checkAvatar(avatarPath);
     }
 }
