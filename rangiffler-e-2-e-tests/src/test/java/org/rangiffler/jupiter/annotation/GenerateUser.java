@@ -22,7 +22,7 @@ public @interface GenerateUser {
 
     String lastname() default "";
 
-    boolean withAvatar() default false;
+    String avatarPath() default "";
 
     String password() default "";
 

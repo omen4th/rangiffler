@@ -92,7 +92,7 @@ public class ProfileTest extends BaseWebTest {
     @AllureId("3004")
     @DisplayName("WEB: User can update an avatar in the profile")
     @Tag("WEB")
-    @ApiLogin(rangifflerUser = @GenerateUser(withAvatar = true))
+    @ApiLogin(rangifflerUser = @GenerateUser(avatarPath = "img/avatar/dartWader.jpg"))
     void shouldUpdateAvatarInProfile(@User UserGrpc user) {
         String avatarPath = "img/avatar/avatar.jpg";
 

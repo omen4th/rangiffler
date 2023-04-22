@@ -5,12 +5,14 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
 import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.api.RangifflerUsersGrpcClient;
+import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
 import org.rangiffler.model.UserGrpc;
 import retrofit2.Response;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 import static org.rangiffler.utils.DataUtils.*;
@@ -46,7 +48,6 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             UserGrpc createdUser = apiRegister(username, password);
 
             updateUserInfoIfPresent(generateUser, createdUser);
-            updateAvatarIfPresent(generateUser, createdUser);
             createFriendsIfPresent(generateUser, createdUser);
             createIncomeInvitationsIfPresent(generateUser, createdUser);
             createOutcomeInvitationsIfPresent(generateUser, createdUser);
@@ -106,19 +107,15 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
     private void updateUserInfoIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
         String firstname = generateUser.firstname();
         String lastname = generateUser.lastname();
+        String avatarPath = generateUser.avatarPath();
+
         createdUser.setFirstname(firstname);
         createdUser.setLastname(lastname);
-
-        if ((!firstname.isEmpty() && (!lastname.isEmpty()))) {
-            userdataClient.updateCurrentUser(createdUser);
+        if (!avatarPath.isEmpty()) {
+            createdUser.setAvatar(getPhotoFromClasspath(avatarPath));
         }
-    }
 
-    private void updateAvatarIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
-        boolean withAvatar = generateUser.withAvatar();
-
-        if (withAvatar) {
-            createdUser.setAvatar(generateRandomAvatar().getBytes());
+        if ((!firstname.isEmpty() || (!lastname.isEmpty())) || (!avatarPath.isEmpty())) {
             userdataClient.updateCurrentUser(createdUser);
         }
     }
@@ -158,6 +155,17 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 userdataClient.acceptInvitation(friend.getUsername(), invitation);
                 createdUser.getFriendsJsons().add(friend);
             }
+        }
+    }
+
+    private byte[] getPhotoFromClasspath(String photoPath) {
+        ClassLoader classLoader = PhotoCondition.class.getClassLoader();
+        try (InputStream is = classLoader.getResourceAsStream(photoPath)) {
+            byte[] photoBytes = is.readAllBytes();
+            String base64 = Base64.getEncoder().encodeToString(photoBytes);
+            return String.format("data:image/jpeg;base64,%s", base64).getBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
