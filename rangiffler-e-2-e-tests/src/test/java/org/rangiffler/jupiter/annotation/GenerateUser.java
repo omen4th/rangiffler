@@ -18,6 +18,12 @@ public @interface GenerateUser {
 
     String username() default "";
 
+    String firstname() default "";
+
+    String lastname() default "";
+
+    boolean withAvatar() default false;
+
     String password() default "";
 
     Friends friends() default @Friends(handleAnnotation = false);

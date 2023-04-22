@@ -10,9 +10,10 @@ import org.rangiffler.jupiter.annotation.ApiLogin;
 import org.rangiffler.jupiter.annotation.GenerateUser;
 import org.rangiffler.jupiter.annotation.User;
 import org.rangiffler.model.UserGrpc;
-import org.rangiffler.page.WelcomePage;
+import org.rangiffler.page.MainPage;
 
-import static com.codeborne.selenide.Selenide.sleep;
+import static org.rangiffler.utils.DataUtils.generateRandomFirstname;
+import static org.rangiffler.utils.DataUtils.generateRandomLastname;
 
 @Epic("[WEB][rangiffler-frontend]: Profile")
 @DisplayName("[WEB][rangiffler-frontend]: Profile")
@@ -20,16 +21,91 @@ public class ProfileTest extends BaseWebTest {
 
     @Test
     @AllureId("3001")
-    @DisplayName("WEB: User can edit all fields in the profile")
+    @DisplayName("WEB: User can fill all fields in the profile")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser)
+    void shouldFillProfileWithAllFieldsSet(@User UserGrpc user) {
+        String newFirstname = generateRandomFirstname();
+        String newLastname = generateRandomLastname();
+
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .toProfilePage()
+                .setFirstname(newFirstname)
+                .setLastname(newLastname)
+                .saveProfile();
+
+        Selenide.refresh();
+
+        mainPage.getHeader()
+                .toProfilePage()
+                .checkFirstname(newFirstname)
+                .checkLastname(newLastname);
+    }
+
+    @Test
+    @AllureId("3002")
+    @DisplayName("WEB: User can update all fields in the profile")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser(firstname = "Test firstname", lastname = "Test lastname"))
     void shouldUpdateProfileWithAllFieldsSet(@User UserGrpc user) {
+        String newFirstname = generateRandomFirstname();
+        String newLastname = generateRandomLastname();
 
-        String username = user.getUsername();
-        Selenide.open(WelcomePage.URL, WelcomePage.class);
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .toProfilePage()
+                .setFirstname(newFirstname)
+                .setLastname(newLastname)
+                .saveProfile();
 
-        System.out.println(username);
-        sleep(10000);
+        Selenide.refresh();
 
+        mainPage.getHeader()
+                .toProfilePage()
+                .checkFirstname(newFirstname)
+                .checkLastname(newLastname);
+    }
+
+    @Test
+    @AllureId("3003")
+    @DisplayName("WEB: User can add an avatar in the profile")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser)
+    void shouldAddAvatarIntoProfile(@User UserGrpc user) {
+        String avatarPath = "img/avatar/avatar.jpg";
+
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .toProfilePage()
+                .updateAvatar(avatarPath)
+                .saveProfile();
+
+        Selenide.refresh();
+
+        mainPage.getHeader()
+                .toProfilePage()
+                .checkAvatar(avatarPath);
+    }
+
+    @Test
+    @AllureId("3004")
+    @DisplayName("WEB: User can update an avatar in the profile")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser(withAvatar = true))
+    void shouldUpdateAvatarInProfile(@User UserGrpc user) {
+        String avatarPath = "img/avatar/avatar.jpg";
+
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .toProfilePage()
+                .updateAvatar(avatarPath)
+                .saveProfile();
+
+        Selenide.refresh();
+
+        mainPage.getHeader()
+                .toProfilePage()
+                .checkAvatar(avatarPath);
     }
 }

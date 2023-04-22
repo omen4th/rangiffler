@@ -48,6 +48,7 @@ dependencies {
     testImplementation 'p6spy:p6spy:3.9.1'
     testImplementation "org.springframework.security:spring-security-crypto:$springSecurityCryptoVersion"
     testImplementation "com.codeborne:selenide:$selenideVersion"
+    testImplementation("com.codeborne:selenide-clear-with-shortcut:$selenideVersion")
     testImplementation "com.github.javafaker:javafaker:${javaFakerVersion}"
     testImplementation "io.grpc:grpc-protobuf:${grpcVersion}"
     testImplementation "io.grpc:grpc-stub:${grpcVersion}"

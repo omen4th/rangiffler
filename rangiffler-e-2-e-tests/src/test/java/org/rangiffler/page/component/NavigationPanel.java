@@ -6,9 +6,11 @@ import org.rangiffler.page.FriendsTravelsPage;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.PeopleAroundPage;
 
+import static com.codeborne.selenide.Selenide.$;
+
 public class NavigationPanel extends BaseComponent<NavigationPanel> {
-    public NavigationPanel(SelenideElement self) {
-        super(self);
+    public NavigationPanel() {
+        super($("div[aria-label='Tabs']"));
     }
 
     private final SelenideElement yourTravelsTab = self.$("button[id*='-main']");

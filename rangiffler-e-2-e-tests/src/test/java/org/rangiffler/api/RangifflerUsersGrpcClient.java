@@ -7,6 +7,7 @@ import io.qameta.allure.grpc.AllureGrpc;
 import org.grpc.rangiffler.grpc.username.UsernameRequest;
 import org.grpc.rangiffler.grpc.users.InvitationRequest;
 import org.grpc.rangiffler.grpc.users.RangifflerUserServiceGrpc;
+import org.grpc.rangiffler.grpc.users.UserRequest;
 import org.rangiffler.model.UserGrpc;
 
 public class RangifflerUsersGrpcClient extends GrpcClient {
@@ -23,6 +24,14 @@ public class RangifflerUsersGrpcClient extends GrpcClient {
     public UserGrpc getCurrentUser(String username) {
         return UserGrpc.fromGrpcMessage(rangifflerUserServiceStub
                 .getCurrentUser(UsernameRequest.newBuilder().setUsername(username).build())
+                .getUser()
+        );
+    }
+
+    @Step("Send request GetCurrentUser to rangiffler-users")
+    public UserGrpc updateCurrentUser(UserGrpc user) {
+        return UserGrpc.fromGrpcMessage(rangifflerUserServiceStub
+                .updateCurrentUser(UserRequest.newBuilder().setUser(UserGrpc.toGrpcMessage(user)).build())
                 .getUser()
         );
     }

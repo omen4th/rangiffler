@@ -10,10 +10,10 @@ import org.rangiffler.jupiter.annotation.*;
 import org.rangiffler.model.UserGrpc;
 import retrofit2.Response;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.rangiffler.utils.DataUtils.generateRandomPassword;
-import static org.rangiffler.utils.DataUtils.generateRandomUsername;
+import static org.rangiffler.utils.DataUtils.*;
 
 public class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -45,6 +45,8 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             }
             UserGrpc createdUser = apiRegister(username, password);
 
+            updateUserInfoIfPresent(generateUser, createdUser);
+            updateAvatarIfPresent(generateUser, createdUser);
             createFriendsIfPresent(generateUser, createdUser);
             createIncomeInvitationsIfPresent(generateUser, createdUser);
             createOutcomeInvitationsIfPresent(generateUser, createdUser);
@@ -99,6 +101,26 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         UserGrpc currentUser = userdataClient.getCurrentUser(username);
         currentUser.setPassword(password);
         return currentUser;
+    }
+
+    private void updateUserInfoIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
+        String firstname = generateUser.firstname();
+        String lastname = generateUser.lastname();
+        createdUser.setFirstname(firstname);
+        createdUser.setLastname(lastname);
+
+        if ((!firstname.isEmpty() && (!lastname.isEmpty()))) {
+            userdataClient.updateCurrentUser(createdUser);
+        }
+    }
+
+    private void updateAvatarIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
+        boolean withAvatar = generateUser.withAvatar();
+
+        if (withAvatar) {
+            createdUser.setAvatar(generateRandomAvatar().getBytes());
+            userdataClient.updateCurrentUser(createdUser);
+        }
     }
 
     private void createIncomeInvitationsIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {

@@ -14,19 +14,19 @@ public class DataUtils {
         return faker.bothify("????####");
     }
 
-    public static String generateRandomName() {
+    public static String generateRandomFirstname() {
         return faker.name().firstName();
     }
 
-    public static String generateRandomSurname() {
+    public static String generateRandomLastname() {
         return faker.name().lastName();
     }
 
-    public static String generateNewCategory() {
-        return faker.book().title();
+    public static String generateRandomDescription() {
+        return faker.hobbit().quote();
     }
 
-    public static String generateRandomSentence(int wordsCount) {
-        return faker.lorem().sentence(wordsCount);
+    public static String generateRandomAvatar() {
+        return faker.avatar().image();
     }
 }
