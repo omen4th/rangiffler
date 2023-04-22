@@ -57,6 +57,11 @@ public class RegisterPage extends BasePage<RegisterPage> {
         return this;
     }
 
+    public RegisterPage checkErrorMessage(String errorMessage) {
+        errorContainer.shouldHave(text(errorMessage));
+        return this;
+    }
+
     @Step("Check that the page is loaded")
     @Override
     public RegisterPage waitForPageLoaded() {
@@ -66,8 +71,4 @@ public class RegisterPage extends BasePage<RegisterPage> {
         return this;
     }
 
-    public RegisterPage checkErrorMessage(String errorMessage) {
-        errorContainer.shouldHave(text(errorMessage));
-        return this;
-    }
 }

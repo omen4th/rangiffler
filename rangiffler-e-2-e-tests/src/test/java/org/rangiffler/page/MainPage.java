@@ -1,5 +1,6 @@
 package org.rangiffler.page;
 
+import io.qameta.allure.Step;
 import org.rangiffler.page.component.Header;
 import org.rangiffler.page.component.NavigationPanel;
 import org.rangiffler.page.component.ProfilePopup;
@@ -23,6 +24,7 @@ public class MainPage extends BasePage<MainPage> {
     }
 
     //TODO
+    @Step("Check that the page is loaded")
     @Override
     public MainPage waitForPageLoaded() {
         header.getSelf().shouldBe(visible).shouldHave(text("Rangiffler"));
