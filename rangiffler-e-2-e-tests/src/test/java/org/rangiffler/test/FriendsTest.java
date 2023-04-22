@@ -41,6 +41,52 @@ public class FriendsTest extends BaseWebTest {
         Selenide.open(MainPage.URL, MainPage.class)
                 .getHeader()
                 .openFriendsPopup()
-                .checkTableContains(friends);
+                .checkTableContainsFriends(friends);
+    }
+
+    @Test
+    @AllureId("4003")
+    @DisplayName("WEB: User should be able to remove friend")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser(friends = @Friends(count = 3)))
+    void shouldRemoveFriend(@User UserGrpc user) {
+        List<UserGrpc> friends = user.getFriendsGrpcList();
+        UserGrpc friendToRemove = friends.remove(0);
+        String usernameToRemove = friendToRemove.getUsername();
+
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .openFriendsPopup()
+                .removeFriend(usernameToRemove);
+
+        Selenide.refresh();
+
+        mainPage.getHeader()
+                .checkFriendsCountInHeader(friends.size())
+                .openFriendsPopup()
+                .checkTableContainsFriends(friends);
+    }
+
+    @Test
+    @AllureId("4004")
+    @DisplayName("WEB: User should be able to remove friend")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser(friends = @Friends(count = 1)))
+    void shouldRemoveLastFriend(@User UserGrpc user) {
+        List<UserGrpc> friends = user.getFriendsGrpcList();
+        UserGrpc friendToRemove = friends.remove(0);
+        String usernameToRemove = friendToRemove.getUsername();
+
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getHeader()
+                .openFriendsPopup()
+                .removeFriend(usernameToRemove);
+
+        Selenide.refresh();
+
+        mainPage.getHeader()
+                .checkFriendsCountInHeader(friends.size())
+                .openFriendsPopup()
+                .checkTableNotContainsFriends();
     }
 }
