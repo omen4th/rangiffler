@@ -12,6 +12,9 @@ import org.rangiffler.jupiter.annotation.User;
 import org.rangiffler.model.UserGrpc;
 import org.rangiffler.page.MainPage;
 
+import static org.rangiffler.model.Country.AUSTRALIA;
+import static org.rangiffler.utils.DataUtils.generateRandomDescription;
+
 @Epic("[WEB][rangiffler-frontend]: Travels")
 @DisplayName("[WEB][rangiffler-frontend]: Travels")
 public class PhotosTest extends BaseWebTest {
@@ -28,6 +31,8 @@ public class PhotosTest extends BaseWebTest {
         mainPage.getHeader()
                 .openPopupToAddPhoto()
                 .addPhoto(photoPath)
+                .setCountry(AUSTRALIA)
+                .setDescription(generateRandomDescription())
                 .checkPhotoAdded(photoPath)
                 .savePhoto();
 

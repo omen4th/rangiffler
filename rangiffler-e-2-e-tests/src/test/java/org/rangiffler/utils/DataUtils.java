@@ -23,10 +23,6 @@ public class DataUtils {
     }
 
     public static String generateRandomDescription() {
-        return faker.hobbit().quote();
-    }
-
-    public static String generateRandomAvatar() {
-        return faker.avatar().image();
+        return faker.yoda().quote();
     }
 }

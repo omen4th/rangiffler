@@ -1,11 +1,15 @@
 package org.rangiffler.page.component;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.rangiffler.model.Country;
 
-import static com.codeborne.selenide.Condition.value;
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.*;
 import static org.rangiffler.condition.PhotoCondition.photo;
 
 public class PhotoPopup extends BaseComponent<PhotoPopup> {
@@ -15,19 +19,27 @@ public class PhotoPopup extends BaseComponent<PhotoPopup> {
 
     private final SelenideElement addPhotoIcon = self.$("#file");
     private final SelenideElement photoImg = self.$("img[src*='data']");
-    private final SelenideElement countryInput = self.$("MuiSelect-nativeInput");
-    private final SelenideElement descriptionInput = self.$("textarea#\\:rh\\:");
+    private final SelenideElement countrySelect = self.$("div[class*='MuiSelect-root']");
+    private final ElementsCollection countriesList = $$("ul.MuiMenu-list li");
+    private final SelenideElement descriptionInput = self.$("textarea.MuiInputBase-input[aria-invalid='false']");
     private final SelenideElement saveButton = self.$(byText("Save"));
 
     @Step("Set country: {0}")
-    public PhotoPopup setCountry(String country) {
-        countryInput.setValue(country);
+    public PhotoPopup setCountry(Country country) {
+        countrySelect.click();
+        countriesList.shouldHave(size(Country.values().length))
+                .filter(text(country.name()))
+                .first()
+                .scrollIntoView(true)
+                .shouldBe(visible)
+                .hover()
+                .click();
         return this;
     }
 
     @Step("Set country: {0}")
     public PhotoPopup checkCountry(String country) {
-        countryInput.shouldHave(value(country));
+        countrySelect.shouldHave(value(country));
         return this;
     }
 
