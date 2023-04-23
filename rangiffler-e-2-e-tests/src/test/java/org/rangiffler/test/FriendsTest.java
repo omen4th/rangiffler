@@ -12,8 +12,8 @@ import org.rangiffler.page.MainPage;
 
 import java.util.List;
 
-@Epic("[WEB][niffler-frontend]: Friends")
-@DisplayName("[WEB][niffler-frontend]: Friends")
+@Epic("[WEB][rangiffler-frontend]: Friends")
+@DisplayName("[WEB][rangiffler-frontend]: Friends")
 public class FriendsTest extends BaseWebTest {
 
     @Test

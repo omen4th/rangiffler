@@ -18,7 +18,7 @@ public class PhotoCondition extends Condition {
     private final String expectedPhotoClasspath;
 
     private PhotoCondition(String expectedPhotoClasspath) {
-        super("photo");
+        super("img/photo");
         this.expectedPhotoClasspath = expectedPhotoClasspath;
 
         if (isEmpty(expectedPhotoClasspath)) {

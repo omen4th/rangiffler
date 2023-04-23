@@ -3,8 +3,8 @@ package org.rangiffler.jupiter.extension;
 import io.qameta.allure.AllureId;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
-import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.api.RangifflerUsersGrpcClient;
+import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.rangiffler.utils.DataUtils.*;
+import static org.rangiffler.utils.DataUtils.generateRandomPassword;
+import static org.rangiffler.utils.DataUtils.generateRandomUsername;
 
 public class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -56,6 +57,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
 
         Object storedResult = resultCollector.length == 1 ? resultCollector[0] : resultCollector;
         context.getStore(API_LOGIN_USERS_NAMESPACE).put(testId, storedResult);
+        //TODO: delete users after test
     }
 
     @Override
@@ -104,7 +106,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         return currentUser;
     }
 
-    private void updateUserInfoIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
+    private void updateUserInfoIfPresent(GenerateUser generateUser, UserGrpc createdUser) {
         String firstname = generateUser.firstname();
         String lastname = generateUser.lastname();
         String avatarPath = generateUser.avatarPath();

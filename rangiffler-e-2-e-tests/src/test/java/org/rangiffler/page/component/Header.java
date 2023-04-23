@@ -15,8 +15,8 @@ public class Header extends BaseComponent<Header> {
     private final SelenideElement addPhotoButton = self.$("button");
     private final SelenideElement profileIcon = self.$(".MuiAvatar-root");
     private final SelenideElement visitedCountriesIcon = self.$("div[aria-label='Your visited countries']");
-    private final SelenideElement yourPhotosIcon = self.$("div[aria-label='Your photos']");
-    private final SelenideElement yourFriendsIcon = self.$("div[aria-label='Your friends']");
+    private final SelenideElement photosIcon = self.$("div[aria-label='Your photos']");
+    private final SelenideElement friendsIcon = self.$("div[aria-label='Your friends']");
     private final SelenideElement logoutIcon = self.$("div[aria-label='Logout']");
 
     public ProfilePopup openProfilePopup() {
@@ -25,13 +25,30 @@ public class Header extends BaseComponent<Header> {
     }
 
     public FriendsPopup openFriendsPopup() {
-        yourFriendsIcon.click();
+        friendsIcon.click();
         return new FriendsPopup();
+    }
+
+    public PhotoPopup openPopupToAddPhoto() {
+        addPhotoButton.click();
+        return new PhotoPopup();
     }
 
     @Step("Check that friends count is equal to {expectedCount}")
     public Header checkFriendsCountInHeader(int expectedCount) {
-        yourFriendsIcon.shouldHave(text(String.valueOf(expectedCount)));
+        friendsIcon.shouldHave(text(String.valueOf(expectedCount)));
+        return this;
+    }
+
+    @Step("Check that photos count is equal to {expectedCount}")
+    public Header checkPhotosCountInHeader(int expectedCount) {
+        photosIcon.shouldHave(text(String.valueOf(expectedCount)));
+        return this;
+    }
+
+    @Step("Check that visited countries count is equal to {expectedCount}")
+    public Header checkCountrisCountInHeader(int expectedCount) {
+        visitedCountriesIcon.shouldHave(text(String.valueOf(expectedCount)));
         return this;
     }
 

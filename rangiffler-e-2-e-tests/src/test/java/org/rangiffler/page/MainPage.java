@@ -3,7 +3,6 @@ package org.rangiffler.page;
 import io.qameta.allure.Step;
 import org.rangiffler.page.component.Header;
 import org.rangiffler.page.component.NavigationPanel;
-import org.rangiffler.page.component.ProfilePopup;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -23,7 +22,6 @@ public class MainPage extends BasePage<MainPage> {
         return header;
     }
 
-    //TODO
     @Step("Check that the page is loaded")
     @Override
     public MainPage waitForPageLoaded() {

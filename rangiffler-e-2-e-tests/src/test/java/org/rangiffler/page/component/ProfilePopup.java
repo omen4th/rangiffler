@@ -56,7 +56,7 @@ public class ProfilePopup extends BaseComponent<ProfilePopup> {
         return this;
     }
 
-    @Step("Update avatar with img: {avatarPath}")
+    @Step("Check avatar with img: {avatarPath}")
     public ProfilePopup checkAvatar(String avatarPath) {
         avatarImg.shouldHave(photo(avatarPath));
         return this;
