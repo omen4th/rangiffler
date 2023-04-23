@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.CollectionCondition.size;
 import static org.rangiffler.condition.PhotoCondition.photo;
 
 public class TravelsPanel extends BaseComponent<TravelsPanel> {
@@ -19,5 +20,9 @@ public class TravelsPanel extends BaseComponent<TravelsPanel> {
         return new PhotoPopup();
     }
 
-
+    @Step("Check that photos count is equal to {expectedCount}")
+    public TravelsPanel checkCountriesCount(int expectedCount) {
+        photosList.shouldHave(size(expectedCount));
+        return this;
+    }
 }

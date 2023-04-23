@@ -6,7 +6,8 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static org.rangiffler.condition.PhotoCondition.photo;
 
 public class PhotoPopup extends BaseComponent<PhotoPopup> {
@@ -26,6 +27,7 @@ public class PhotoPopup extends BaseComponent<PhotoPopup> {
     private final SelenideElement closePopupIcon = self.$("button [data-testid='CloseIcon']");
     private final SelenideElement photoCountry = self.$("p.MuiTypography-h6");
     private final SelenideElement photoDescription = self.$("p.MuiTypography-body2");
+    private final SelenideElement confirmDeletionButton = self.$(byText("Delete"));
 
     @Step("Set country: {0}")
     public PhotoPopup setCountry(String country) {
@@ -80,6 +82,12 @@ public class PhotoPopup extends BaseComponent<PhotoPopup> {
     @Step("Save photo")
     public void savePhoto() {
         saveButton.click();
+    }
+
+    @Step("Delete photo")
+    public void deletePhoto() {
+        deleteIcon.click();
+        confirmDeletionButton.click();
     }
 
 }

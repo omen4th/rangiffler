@@ -46,7 +46,7 @@ public class FriendsTest extends BaseWebTest {
     @DisplayName("WEB: User should be able to remove friend via Friends popup")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser(friends = @Friends(count = 3)))
-    void shouldRemoveFriendViaFrindsPopup(@User UserGrpc user) {
+    void shouldRemoveFriendViaFriendsPopup(@User UserGrpc user) {
         List<UserGrpc> friends = user.getFriendsGrpcList();
         UserGrpc friendToRemove = friends.remove(0);
         String usernameToRemove = friendToRemove.getUsername();

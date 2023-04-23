@@ -22,7 +22,7 @@ public class RegistrationTest extends BaseWebTest {
 
     @Test
     @AllureId("2001")
-    @DisplayName("WEB: User can successfully register in the system")
+    @DisplayName("WEB: User should be able successfully register in the system")
     @Tag("WEB")
     void shouldRegisterNewUser() {
         String newUsername = generateRandomUsername();

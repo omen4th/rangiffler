@@ -21,7 +21,7 @@ public class ProfileTest extends BaseWebTest {
 
     @Test
     @AllureId("3001")
-    @DisplayName("WEB: User can fill all fields in the profile")
+    @DisplayName("WEB: User should be able fill all fields in the profile")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser)
     void shouldFillProfileWithAllFieldsSet(@User UserGrpc user) {
@@ -45,7 +45,7 @@ public class ProfileTest extends BaseWebTest {
 
     @Test
     @AllureId("3002")
-    @DisplayName("WEB: User can update all fields in the profile")
+    @DisplayName("WEB: User should be able update all fields in the profile")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser(firstname = "Test firstname", lastname = "Test lastname"))
     void shouldUpdateProfileWithAllFieldsSet(@User UserGrpc user) {
@@ -69,7 +69,7 @@ public class ProfileTest extends BaseWebTest {
 
     @Test
     @AllureId("3003")
-    @DisplayName("WEB: User can add an avatar in the profile")
+    @DisplayName("WEB: User should be able add an avatar in the profile")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser)
     void shouldAddAvatarIntoProfile(@User UserGrpc user) {
@@ -90,7 +90,7 @@ public class ProfileTest extends BaseWebTest {
 
     @Test
     @AllureId("3004")
-    @DisplayName("WEB: User can update an avatar in the profile")
+    @DisplayName("WEB: User should be able update an avatar in the profile")
     @Tag("WEB")
     @ApiLogin(rangifflerUser = @GenerateUser(avatarPath = "img/avatar/dartWader.jpg"))
     void shouldUpdateAvatarInProfile(@User UserGrpc user) {
