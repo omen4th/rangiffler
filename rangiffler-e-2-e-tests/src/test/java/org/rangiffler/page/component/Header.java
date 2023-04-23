@@ -47,7 +47,7 @@ public class Header extends BaseComponent<Header> {
     }
 
     @Step("Check that visited countries count is equal to {expectedCount}")
-    public Header checkCountrisCountInHeader(int expectedCount) {
+    public Header checkCountriesCountInHeader(int expectedCount) {
         visitedCountriesIcon.shouldHave(text(String.valueOf(expectedCount)));
         return this;
     }

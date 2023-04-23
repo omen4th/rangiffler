@@ -7,7 +7,7 @@ create table if not exists photos
     id          UUID unique not null default uuid_generate_v1() primary key,
     country     varchar(3),
     photo       bytea,
-    description varchar(255),
+    description varchar(500),
     username    varchar(50) not null
 );
 

@@ -3,11 +3,14 @@ package org.rangiffler.jupiter.extension;
 import io.qameta.allure.AllureId;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.extension.*;
+import org.rangiffler.api.RangifflerPhotoGrpcClient;
 import org.rangiffler.api.RangifflerUsersGrpcClient;
 import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
+import org.rangiffler.model.CountryGrpc;
+import org.rangiffler.model.PhotoGrpc;
 import org.rangiffler.model.UserGrpc;
 import retrofit2.Response;
 
@@ -22,6 +25,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
 
     private final RangifflerAuthClient authClient = new RangifflerAuthClient();
     private final RangifflerUsersGrpcClient userdataClient = new RangifflerUsersGrpcClient();
+    private final RangifflerPhotoGrpcClient photoClient = new RangifflerPhotoGrpcClient();
     protected static final Config CFG = Config.getConfig();
 
     public static final ExtensionContext.Namespace
@@ -52,6 +56,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             createFriendsIfPresent(generateUser, createdUser);
             createIncomeInvitationsIfPresent(generateUser, createdUser);
             createOutcomeInvitationsIfPresent(generateUser, createdUser);
+            addPhotosIfPresent(generateUser, createdUser);
             resultCollector[i] = createdUser;
         }
 
@@ -114,7 +119,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         createdUser.setFirstname(firstname);
         createdUser.setLastname(lastname);
         if (!avatarPath.isEmpty()) {
-            createdUser.setAvatar(getPhotoFromClasspath(avatarPath));
+            createdUser.setAvatar(getPhotoByteFromClasspath(avatarPath));
         }
 
         if ((!firstname.isEmpty() || (!lastname.isEmpty())) || (!avatarPath.isEmpty())) {
@@ -160,7 +165,23 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         }
     }
 
-    private byte[] getPhotoFromClasspath(String photoPath) {
+    private void addPhotosIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
+        GeneratePhoto[] photos = generateUser.photos();
+        if (photos != null) {
+            for (GeneratePhoto photo : photos) {
+                PhotoGrpc photoGrpc = new PhotoGrpc();
+                photoGrpc.setPhoto(getPhotoByteFromClasspath(photo.photoPath()));
+                photoGrpc.setDescription(photo.description());
+                photoGrpc.setCountry(CountryGrpc.builder().code(photo.country().getCode()).build());
+                photoGrpc.setUsername(createdUser.getUsername());
+                photoGrpc.setPhotoPath(photo.photoPath());
+                photoClient.addUserPhoto(photoGrpc);
+                createdUser.getPhotosGrpcList().add(photoGrpc);
+            }
+        }
+    }
+
+    private byte[] getPhotoByteFromClasspath(String photoPath) {
         ClassLoader classLoader = PhotoCondition.class.getClassLoader();
         try (InputStream is = classLoader.getResourceAsStream(photoPath)) {
             byte[] photoBytes = is.readAllBytes();

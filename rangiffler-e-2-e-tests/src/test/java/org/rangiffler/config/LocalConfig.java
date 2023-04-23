@@ -5,7 +5,7 @@ import com.codeborne.selenide.Configuration;
 public class LocalConfig implements Config {
 
     static {
-        Configuration.browserSize = "1980x1024";
+        Configuration.browserSize = "1366x900";
     }
 
     @Override
@@ -30,6 +30,16 @@ public class LocalConfig implements Config {
     @Override
     public int usersGrpcPort() {
         return 8093;
+    }
+
+    @Override
+    public String photoGrpcAddress() {
+        return "127.0.0.1";
+    }
+
+    @Override
+    public int photoGrpcPort() {
+        return 8092;
     }
 
     public String databaseAddress() {

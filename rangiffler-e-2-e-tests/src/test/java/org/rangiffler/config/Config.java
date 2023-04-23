@@ -22,5 +22,9 @@ public interface Config {
 
     int usersGrpcPort();
 
+    String photoGrpcAddress();
+
+    int photoGrpcPort();
+
     String databaseAddress();
 }

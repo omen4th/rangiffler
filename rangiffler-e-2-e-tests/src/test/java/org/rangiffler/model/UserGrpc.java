@@ -25,6 +25,8 @@ public class UserGrpc {
     private String password;
 
     @Builder.Default
+    private List<PhotoGrpc> photosGrpcList = new ArrayList<>();
+    @Builder.Default
     private List<UserGrpc> friendsGrpcList = new ArrayList<>();
     @Builder.Default
     private List<UserGrpc> invitationsGrpcList = new ArrayList<>();

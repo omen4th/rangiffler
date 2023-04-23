@@ -26,6 +26,8 @@ public @interface GenerateUser {
 
     String password() default "";
 
+    GeneratePhoto[] photos() default {};
+
     Friends friends() default @Friends(handleAnnotation = false);
 
     IncomeInvitations incomeInvitations() default @IncomeInvitations(handleAnnotation = false);
