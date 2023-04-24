@@ -1,4 +1,4 @@
-package org.rangiffler.test;
+package org.rangiffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.AllureId;
@@ -13,7 +13,6 @@ import org.rangiffler.page.LoginPage;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.WelcomePage;
 
-import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.LOGIN;
 import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.METHOD;
 import static org.rangiffler.utils.ErrorMessage.BAD_CREDENTIALS;
 
