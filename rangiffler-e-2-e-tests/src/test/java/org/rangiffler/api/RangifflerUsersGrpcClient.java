@@ -7,6 +7,8 @@ import org.grpc.rangiffler.grpc.users.RangifflerUserServiceGrpc;
 import org.grpc.rangiffler.grpc.users.UserRequest;
 import org.rangiffler.model.UserGrpc;
 
+import java.util.List;
+
 public class RangifflerUsersGrpcClient extends GrpcClient {
 
     public RangifflerUsersGrpcClient() {
@@ -53,4 +55,25 @@ public class RangifflerUsersGrpcClient extends GrpcClient {
                 .getUser()
         );
     }
+
+    @Step("Request GetAllUsers to rangiffler-users")
+    public List<UserGrpc> getAllUsers(String username) {
+        return rangifflerUserServiceStub
+                .getAllUsers(UsernameRequest.newBuilder().setUsername(username).build())
+                .getUsersList()
+                .stream().map(UserGrpc::fromGrpcMessage)
+                .toList();
+    }
+
+
+    @Step("Request GetFriends to rangiffler-users")
+    public List<UserGrpc> getFriends(String username) {
+        return rangifflerUserServiceStub
+                .getFriends(UsernameRequest.newBuilder().setUsername(username).build())
+                .getUsersList()
+                .stream().map(UserGrpc::fromGrpcMessage)
+                .toList();
+    }
+
+
 }

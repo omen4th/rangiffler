@@ -25,10 +25,10 @@ public class RangifflerGeoTest extends BaseGRPCTest {
     static final RangifflerGeoGrpcClient geoClient = new RangifflerGeoGrpcClient();
 
     @Test
-    @AllureId("10001")
+    @AllureId("1101")
     @DisplayName("gRPC: Service rangiffler-geo should return 175 countries")
     @Tag("gRPC")
-    void getAllCountries() {
+    void getAllCountriesTest() {
         List<CountryGrpc> allCountries = geoClient.getAllCountries();
 
         step("Check that response contains 175 countries", () ->
@@ -45,7 +45,7 @@ public class RangifflerGeoTest extends BaseGRPCTest {
 
     @ParameterizedTest
     @MethodSource
-    @AllureId("10002")
+    @AllureId("1102")
     @DisplayName("gRPC: Service rangiffler-geo should return the expected country {0} by provided code")
     @Tag("gRPC")
     void getCountryByCodeTest(Country country) {
