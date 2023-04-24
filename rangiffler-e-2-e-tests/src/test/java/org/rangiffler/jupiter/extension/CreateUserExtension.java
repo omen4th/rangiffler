@@ -9,10 +9,7 @@ import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
-import org.rangiffler.model.Country;
-import org.rangiffler.model.CountryGrpc;
-import org.rangiffler.model.PhotoGrpc;
-import org.rangiffler.model.UserGrpc;
+import org.rangiffler.model.*;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -20,6 +17,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import static org.rangiffler.utils.DataUtils.*;
+import static org.rangiffler.utils.PhotoUtils.getPhotoByteFromClasspath;
 
 public class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -156,6 +154,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 UserGrpc addFriend = new UserGrpc();
                 addFriend.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(invitation.getUsername(), addFriend);
+                invitation.setFriendStatus(FriendStatus.INVITATION_SENT);
                 createdUser.getInvitationsGrpcList().add(invitation);
             }
         }
@@ -167,6 +166,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             for (int i = 0; i < invitations.count(); i++) {
                 UserGrpc friend = apiRegister(generateRandomUsername(), generateRandomPassword());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
+                friend.setFriendStatus(FriendStatus.INVITATION_RECEIVED);
                 createdUser.getInvitationsGrpcList().add(friend);
             }
         }
@@ -181,6 +181,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 invitation.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
                 userdataClient.acceptInvitation(friend.getUsername(), invitation);
+                friend.setFriendStatus(FriendStatus.FRIEND);
                 createdUser.getFriendsGrpcList().add(friend);
             }
         }
@@ -214,7 +215,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                     PhotoGrpc photoGrpc = new PhotoGrpc();
                     photoGrpc.setPhoto(getPhotoByteFromClasspath(photoPath));
                     photoGrpc.setDescription(generateRandomDescription());
-                    photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.name()).build());
+                    photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.toString()).build());
                     photoGrpc.setUsername(friend.getUsername());
                     photoGrpc.setPhotoPath(photoPath);
                     photoClient.addUserPhoto(photoGrpc);
@@ -225,14 +226,4 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         }
     }
 
-    private byte[] getPhotoByteFromClasspath(String photoPath) {
-        ClassLoader classLoader = PhotoCondition.class.getClassLoader();
-        try (InputStream is = classLoader.getResourceAsStream(photoPath)) {
-            byte[] photoBytes = is.readAllBytes();
-            String base64 = Base64.getEncoder().encodeToString(photoBytes);
-            return String.format("data:image/jpeg;base64,%s", base64).getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

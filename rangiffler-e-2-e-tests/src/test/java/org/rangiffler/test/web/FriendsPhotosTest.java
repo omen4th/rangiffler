@@ -1,4 +1,4 @@
-package org.rangiffler.test;
+package org.rangiffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.AllureId;

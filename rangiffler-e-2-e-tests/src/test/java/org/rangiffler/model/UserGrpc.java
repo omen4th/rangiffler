@@ -52,12 +52,17 @@ public class UserGrpc {
     }
 
     public static UserGrpc fromGrpcMessage(User userMessage) {
-        return UserGrpc.builder()
+        UserGrpc.UserGrpcBuilder builder = UserGrpc.builder()
                 .username(userMessage.getUsername())
                 .firstname(userMessage.getFirstname())
                 .lastname(userMessage.getLastname())
                 .avatar(userMessage.getAvatar().getBytes())
-                .friendStatus(FriendStatus.valueOf(userMessage.getFriendStatus().name()))
-                .build();
+                .friendStatus(FriendStatus.valueOf(userMessage.getFriendStatus().name()));
+
+        if (!userMessage.getId().isEmpty()) {
+            builder.id(UUID.fromString(userMessage.getId()));
+        }
+
+        return builder.build();
     }
 }

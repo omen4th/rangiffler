@@ -42,6 +42,16 @@ public class LocalConfig implements Config {
         return 8092;
     }
 
+    @Override
+    public String geoGrpcAddress() {
+        return "127.0.0.1";
+    }
+
+    @Override
+    public int geoGrpcPort() {
+        return 8094;
+    }
+
     public String databaseAddress() {
         return "127.0.0.1:5432";
     }
