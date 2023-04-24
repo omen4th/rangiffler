@@ -63,7 +63,6 @@ public class UserGrpcMessage {
 
     public static UserGrpcMessage fromGrpcMessage(User userMessage) {
         return UserGrpcMessage.builder()
-                .id(UUID.fromString((userMessage.getId())))
                 .username(userMessage.getUsername())
                 .firstname(userMessage.getFirstname())
                 .lastname(userMessage.getLastname())

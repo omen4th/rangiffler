@@ -60,9 +60,12 @@ public class GrpcPhotoService extends RangifflerPhotoServiceGrpc.RangifflerPhoto
         photoEntity.setDescription(photo.getDescription());
         photoEntity.setUsername(photo.getUsername());
 
+        CountryGrpcMessage country = geoClient.getCountryByCode(photo.getCountry().getCode());
+
         PhotoResponse response =
                 PhotoResponse.newBuilder().setPhoto(toGrpcMessage(
-                        fromEntity(photoRepository.save(photoEntity), photo.getCountry()))).build();
+                        fromEntity(photoRepository.save(photoEntity), country)
+                )).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
@@ -75,9 +78,12 @@ public class GrpcPhotoService extends RangifflerPhotoServiceGrpc.RangifflerPhoto
         photoEntity.setDescription(request.getPhoto().getDescription());
         photoEntity.setCountry(request.getPhoto().getCountry().getCode());
 
+        CountryGrpcMessage country = geoClient.getCountryByCode(photo.getCountry().getCode());
+
         PhotoResponse response =
                 PhotoResponse.newBuilder().setPhoto(toGrpcMessage(
-                        fromEntity(photoRepository.save(photoEntity), photo.getCountry()))).build();
+                        fromEntity(photoRepository.save(photoEntity), country)
+                )).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

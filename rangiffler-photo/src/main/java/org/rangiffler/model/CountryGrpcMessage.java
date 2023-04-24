@@ -17,11 +17,18 @@ public class CountryGrpcMessage {
     private String name;
 
     public static CountryGrpcMessage fromGrpcMessage(Country countryMessage) {
-        return CountryGrpcMessage.builder()
-                .id(UUID.fromString((countryMessage.getId())))
-                .code(countryMessage.getCode())
-                .name(countryMessage.getName())
-                .build();
+        CountryGrpcMessage.CountryGrpcMessageBuilder builder = CountryGrpcMessage.builder()
+                .code(countryMessage.getCode());
+
+        if (!countryMessage.getId().isEmpty()) {
+            builder.id(UUID.fromString((countryMessage.getId())));
+        }
+
+        if (!countryMessage.getName().isEmpty()) {
+            builder.name(countryMessage.getName());
+        }
+
+        return builder.build();
     }
 
     public static Country toGrpcMessage(CountryGrpcMessage countryGrpcMessage) {
