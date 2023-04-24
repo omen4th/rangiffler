@@ -12,4 +12,8 @@ public @interface Friends {
     boolean handleAnnotation() default true;
 
     int count() default 0;
+
+    boolean withPhotos() default false;
+
+    boolean withProfileInfo() default false;
 }

@@ -162,7 +162,7 @@ public class PhotosTest extends BaseWebTest {
         Selenide.refresh();
 
         mainPage.getTravelsPanel()
-                .checkCountriesCount(photos.size());
+                .checkPhotosCount(photos.size());
 
         mainPage.getHeader()
                 .checkPhotosCountInHeader(photos.size())
@@ -190,7 +190,7 @@ public class PhotosTest extends BaseWebTest {
         Selenide.refresh();
 
         mainPage.getTravelsPanel()
-                .checkCountriesCount(photos.size());
+                .checkPhotosCount(photos.size());
 
         mainPage.getHeader()
                 .checkPhotosCountInHeader(photos.size())

@@ -10,6 +10,10 @@ public class FriendsTravelsPage extends BasePage<FriendsTravelsPage> {
 
     protected final TravelsPanel travelsPanel = new TravelsPanel($(".MuiTabPanel-root[id*='friends']"));
 
+    public TravelsPanel getTravelsPanel() {
+        return travelsPanel;
+    }
+
     @Step("Check that the page is loaded")
     @Override
     public FriendsTravelsPage waitForPageLoaded() {

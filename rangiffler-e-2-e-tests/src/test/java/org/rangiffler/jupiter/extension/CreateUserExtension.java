@@ -9,6 +9,7 @@ import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
+import org.rangiffler.model.Country;
 import org.rangiffler.model.CountryGrpc;
 import org.rangiffler.model.PhotoGrpc;
 import org.rangiffler.model.UserGrpc;
@@ -18,8 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.rangiffler.utils.DataUtils.generateRandomPassword;
-import static org.rangiffler.utils.DataUtils.generateRandomUsername;
+import static org.rangiffler.utils.DataUtils.*;
 
 public class CreateUserExtension implements BeforeEachCallback, ParameterResolver {
 
@@ -57,11 +57,13 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             createIncomeInvitationsIfPresent(generateUser, createdUser);
             createOutcomeInvitationsIfPresent(generateUser, createdUser);
             addPhotosIfPresent(generateUser, createdUser);
+            addFriendsPhotosIfPresent(generateUser, createdUser);
             resultCollector[i] = createdUser;
         }
 
         Object storedResult = resultCollector.length == 1 ? resultCollector[0] : resultCollector;
         context.getStore(API_LOGIN_USERS_NAMESPACE).put(testId, storedResult);
+
         //TODO: delete users after test
     }
 
@@ -177,6 +179,29 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 photoGrpc.setPhotoPath(photo.photoPath());
                 photoClient.addUserPhoto(photoGrpc);
                 createdUser.getPhotosGrpcList().add(photoGrpc);
+            }
+        }
+    }
+
+    private void addFriendsPhotosIfPresent(GenerateUser generateUser, UserGrpc createdUser) throws Exception {
+        Friends friends = generateUser.friends();
+        if (friends.handleAnnotation() && friends.count() > 0 && friends.withPhotos()) {
+            for (int i = 0; i < friends.count(); i++) {
+                UserGrpc friend = createdUser.getFriendsGrpcList().get(i);
+
+                for (i = 0; i < 2; i++) {
+                    String photoPath = getRandomPhotoPath();
+                    Country country = getRandomCountry();
+                    PhotoGrpc photoGrpc = new PhotoGrpc();
+                    photoGrpc.setPhoto(getPhotoByteFromClasspath(photoPath));
+                    photoGrpc.setDescription(generateRandomDescription());
+                    photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.name()).build());
+                    photoGrpc.setUsername(friend.getUsername());
+                    photoGrpc.setPhotoPath(photoPath);
+                    photoClient.addUserPhoto(photoGrpc);
+
+                    friend.getPhotosGrpcList().add(photoGrpc);
+                }
             }
         }
     }

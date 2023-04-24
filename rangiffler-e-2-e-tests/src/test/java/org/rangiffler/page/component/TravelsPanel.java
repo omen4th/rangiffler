@@ -21,7 +21,7 @@ public class TravelsPanel extends BaseComponent<TravelsPanel> {
     }
 
     @Step("Check that photos count is equal to {expectedCount}")
-    public TravelsPanel checkCountriesCount(int expectedCount) {
+    public TravelsPanel checkPhotosCount(int expectedCount) {
         photosList.shouldHave(size(expectedCount));
         return this;
     }
