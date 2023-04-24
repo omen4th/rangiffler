@@ -31,7 +31,7 @@ The main technology used for the frontend is React.
 - [Mac](https://docs.docker.com/desktop/install/mac-install/) (for ARM and Intel, different packages)
 - [Linux](https://docs.docker.com/desktop/install/linux-install/)
 
-- After installation, make sure the docker commands work by running `docker -v` in the command prompt/terminal.
+After installation, make sure the docker commands work by running `docker -v` in the command prompt/terminal.
 
 #### 2. Pull the postgres container version 15.1 by running the following command
 
