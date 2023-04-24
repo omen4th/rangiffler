@@ -149,7 +149,7 @@ cd rangiffler-e-2-e-tests
 gradle allureServe
 ```
 
-This open launch the Allure report in your default browser. The report will contain detailed information on the tests run.
+This command launches the Allure report in your default browser. The report will contain detailed information on the tests run.
 
 ---
 Thanks for reading!
