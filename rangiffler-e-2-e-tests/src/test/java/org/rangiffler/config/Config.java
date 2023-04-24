@@ -26,5 +26,9 @@ public interface Config {
 
     int photoGrpcPort();
 
+    String geoGrpcAddress();
+
+    int geoGrpcPort();
+
     String databaseAddress();
 }

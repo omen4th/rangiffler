@@ -214,7 +214,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                     PhotoGrpc photoGrpc = new PhotoGrpc();
                     photoGrpc.setPhoto(getPhotoByteFromClasspath(photoPath));
                     photoGrpc.setDescription(generateRandomDescription());
-                    photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.name()).build());
+                    photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.toString()).build());
                     photoGrpc.setUsername(friend.getUsername());
                     photoGrpc.setPhotoPath(photoPath);
                     photoClient.addUserPhoto(photoGrpc);
