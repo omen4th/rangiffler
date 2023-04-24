@@ -16,7 +16,7 @@ import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.METHOD;
-import static org.rangiffler.model.FriendStatus.FRIEND;
+import static org.rangiffler.model.FriendStatus.*;
 import static org.rangiffler.utils.DataUtils.generateRandomFirstname;
 import static org.rangiffler.utils.DataUtils.generateRandomLastname;
 import static org.rangiffler.utils.PhotoUtils.getPhotoByteFromClasspath;
@@ -192,4 +192,141 @@ public class RangifflerUsersTest extends BaseGRPCTest {
         });
 
     }
+
+    @Test
+    @AllureId("1207")
+    @DisplayName("gRPC: Service rangiffler-users should return an empty list if the user doesn't have friends")
+    @Tag("gRPC")
+    @GenerateUser()
+    void getEmptyFriendsListTest(@User(use = METHOD) UserGrpc user) {
+        List<UserGrpc> friends = usersClient.getFriends(user.getUsername());
+
+        step("Check that all friends list is empty", () ->
+                assertEquals(0, friends.size())
+        );
+    }
+
+    @Test
+    @AllureId("1208")
+    @DisplayName("gRPC: Service rangiffler-users should return a list of invitation for the user")
+    @Tag("gRPC")
+    @GenerateUser(
+            friends = @Friends(count = 1),
+            outcomeInvitations = @OutcomeInvitations(count = 1),
+            incomeInvitations = @IncomeInvitations(count = 1)
+    )
+    void getInvitationsTest(@User(use = METHOD) UserGrpc user) {
+        List<UserGrpc> invites = usersClient.getInvitations(user.getUsername());
+        UserGrpc invite = user.getInvitationsGrpcList().get(0);
+        UserGrpc inviteInResponse = invites.get(0);
+
+        step("Check that all invites list contains expected users", () ->
+                assertEquals(1, invites.size())
+        );
+
+        step("Check the user from the invite in the response", () -> {
+            assertTrue(invite.getId().toString().matches(ID_REGEXP));
+            assertEquals(invite.getUsername(), inviteInResponse.getUsername());
+            assertEquals(INVITATION_RECEIVED, inviteInResponse.getFriendStatus());
+            assertEquals(invite.getLastname(), inviteInResponse.getLastname());
+            assertEquals(invite.getFirstname(), inviteInResponse.getFirstname());
+            assertEquals(new String(invite.getAvatar(), StandardCharsets.UTF_8), new String(inviteInResponse.getAvatar(), StandardCharsets.UTF_8));
+        });
+
+    }
+
+    @Test
+    @AllureId("1209")
+    @DisplayName("gRPC: Service rangiffler-users should return an empty list if the user doesn't have invites")
+    @Tag("gRPC")
+    @GenerateUser()
+    void getEmptyInvitationListTest(@User(use = METHOD) UserGrpc user) {
+        List<UserGrpc> invites = usersClient.getInvitations(user.getUsername());
+
+        step("Check that all invitations list is empty", () ->
+                assertEquals(0, invites.size())
+        );
+    }
+
+    @Test
+    @AllureId("1210")
+    @DisplayName("gRPC: Send invitation to a user")
+    @Tag("gRPC")
+    @GenerateUsers({
+            @GenerateUser,
+            @GenerateUser
+    })
+    void sendInvitationTest(@User(use = METHOD) UserGrpc[] users) {
+        UserGrpc currentUser = users[0];
+        UserGrpc userToInvite = users[1];
+
+        UserGrpc inviteResponse = usersClient.sendInvitation(currentUser.getUsername(), userToInvite);
+
+        step("Check the invitation in the response", () -> {
+            assertTrue(userToInvite.getId().toString().matches(ID_REGEXP));
+            assertEquals(userToInvite.getUsername(), inviteResponse.getUsername());
+            assertEquals(INVITATION_SENT, inviteResponse.getFriendStatus());
+            assertEquals(userToInvite.getLastname(), inviteResponse.getLastname());
+            assertEquals(userToInvite.getFirstname(), inviteResponse.getFirstname());
+            assertEquals(new String(userToInvite.getAvatar(), StandardCharsets.UTF_8), new String(inviteResponse.getAvatar(), StandardCharsets.UTF_8));
+        });
+    }
+
+    @Test
+    @AllureId("1211")
+    @DisplayName("gRPC: Accept invitation from a user")
+    @Tag("gRPC")
+    @GenerateUser(incomeInvitations = @IncomeInvitations(count = 1))
+    void acceptInvitationTest(@User(use = METHOD) UserGrpc user) {
+        UserGrpc friendToAccept = user.getInvitationsGrpcList().get(0);
+        UserGrpc acceptInvitationResponse = usersClient.acceptInvitation(user.getUsername(), friendToAccept);
+
+        step("Check the submit invitation in the response", () -> {
+            assertTrue(friendToAccept.getId().toString().matches(ID_REGEXP));
+            assertEquals(friendToAccept.getUsername(), acceptInvitationResponse.getUsername());
+            assertEquals(FRIEND, acceptInvitationResponse.getFriendStatus());
+            assertEquals(friendToAccept.getLastname(), acceptInvitationResponse.getLastname());
+            assertEquals(friendToAccept.getFirstname(), acceptInvitationResponse.getFirstname());
+            assertEquals(new String(friendToAccept.getAvatar(), StandardCharsets.UTF_8), new String(acceptInvitationResponse.getAvatar(), StandardCharsets.UTF_8));
+        });
+    }
+
+    @Test
+    @AllureId("1212")
+    @DisplayName("gRPC: Decline invitation from a user")
+    @Tag("gRPC")
+    @GenerateUser(incomeInvitations = @IncomeInvitations(count = 1))
+    void declineInvitationTest(@User(use = METHOD) UserGrpc user) {
+        UserGrpc friendToDecline = user.getInvitationsGrpcList().get(0);
+        UserGrpc declineInvitationResponse = usersClient.declineInvitation(user.getUsername(), friendToDecline);
+
+        step("Check the decline invitation in the response", () -> {
+            assertTrue(friendToDecline.getId().toString().matches(ID_REGEXP));
+            assertEquals(friendToDecline.getUsername(), declineInvitationResponse.getUsername());
+            assertEquals(NOT_FRIEND, declineInvitationResponse.getFriendStatus());
+            assertEquals(friendToDecline.getLastname(), declineInvitationResponse.getLastname());
+            assertEquals(friendToDecline.getFirstname(), declineInvitationResponse.getFirstname());
+            assertEquals(new String(friendToDecline.getAvatar(), StandardCharsets.UTF_8), new String(declineInvitationResponse.getAvatar(), StandardCharsets.UTF_8));
+        });
+    }
+
+    @Test
+    @AllureId("1213")
+    @DisplayName("gRPC: Remove a user from the Friends")
+    @Tag("gRPC")
+    @GenerateUser(friends = @Friends(count = 1))
+    void removeUserFromFriendsTest(@User(use = METHOD) UserGrpc user) {
+        UserGrpc friendToRemove = user.getFriendsGrpcList().get(0);
+        UserGrpc removeFriendResponse = usersClient.removeUserFromFriends(user.getUsername(), friendToRemove);
+
+        step("Check the response to remove user", () -> {
+            assertTrue(friendToRemove.getId().toString().matches(ID_REGEXP));
+            assertEquals(friendToRemove.getUsername(), removeFriendResponse.getUsername());
+            assertEquals(NOT_FRIEND, removeFriendResponse.getFriendStatus());
+            assertEquals(friendToRemove.getLastname(), removeFriendResponse.getLastname());
+            assertEquals(friendToRemove.getFirstname(), removeFriendResponse.getFirstname());
+            assertEquals(new String(friendToRemove.getAvatar(), StandardCharsets.UTF_8), new String(removeFriendResponse.getAvatar(), StandardCharsets.UTF_8));
+        });
+    }
+
 }

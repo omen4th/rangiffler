@@ -9,10 +9,7 @@ import org.rangiffler.api.auth.RangifflerAuthClient;
 import org.rangiffler.condition.PhotoCondition;
 import org.rangiffler.config.Config;
 import org.rangiffler.jupiter.annotation.*;
-import org.rangiffler.model.Country;
-import org.rangiffler.model.CountryGrpc;
-import org.rangiffler.model.PhotoGrpc;
-import org.rangiffler.model.UserGrpc;
+import org.rangiffler.model.*;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -157,6 +154,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 UserGrpc addFriend = new UserGrpc();
                 addFriend.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(invitation.getUsername(), addFriend);
+                invitation.setFriendStatus(FriendStatus.INVITATION_SENT);
                 createdUser.getInvitationsGrpcList().add(invitation);
             }
         }
@@ -168,6 +166,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             for (int i = 0; i < invitations.count(); i++) {
                 UserGrpc friend = apiRegister(generateRandomUsername(), generateRandomPassword());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
+                friend.setFriendStatus(FriendStatus.INVITATION_RECEIVED);
                 createdUser.getInvitationsGrpcList().add(friend);
             }
         }
@@ -182,6 +181,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 invitation.setUsername(createdUser.getUsername());
                 userdataClient.sendInvitation(createdUser.getUsername(), friend);
                 userdataClient.acceptInvitation(friend.getUsername(), invitation);
+                friend.setFriendStatus(FriendStatus.FRIEND);
                 createdUser.getFriendsGrpcList().add(friend);
             }
         }

@@ -65,7 +65,6 @@ public class RangifflerUsersGrpcClient extends GrpcClient {
                 .toList();
     }
 
-
     @Step("Request GetFriends to rangiffler-users")
     public List<UserGrpc> getFriends(String username) {
         return rangifflerUserServiceStub
@@ -75,5 +74,34 @@ public class RangifflerUsersGrpcClient extends GrpcClient {
                 .toList();
     }
 
+    @Step("Request GetInvitations to rangiffler-users")
+    public List<UserGrpc> getInvitations(String username) {
+        return rangifflerUserServiceStub
+                .getInvitations(UsernameRequest.newBuilder().setUsername(username).build())
+                .getUsersList()
+                .stream().map(UserGrpc::fromGrpcMessage)
+                .toList();
+    }
 
+    @Step("Request DeclineInvitation to rangiffler-users")
+    public UserGrpc declineInvitation(String username, UserGrpc friend) {
+        return UserGrpc.fromGrpcMessage(rangifflerUserServiceStub
+                .declineInvitation(InvitationRequest.newBuilder()
+                        .setUsername(username)
+                        .setFriend(UserGrpc.toGrpcMessage(friend))
+                        .build())
+                .getUser()
+        );
+    }
+
+    @Step("Request RemoveUserFromFriends to rangiffler-users")
+    public UserGrpc removeUserFromFriends(String username, UserGrpc friend) {
+        return UserGrpc.fromGrpcMessage(rangifflerUserServiceStub
+                .removeUserFromFriends(InvitationRequest.newBuilder()
+                        .setUsername(username)
+                        .setFriend(UserGrpc.toGrpcMessage(friend))
+                        .build())
+                .getUser()
+        );
+    }
 }
