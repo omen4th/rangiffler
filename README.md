@@ -22,6 +22,8 @@ These technologies have been used to develop a backend on microservices and crea
 
 The main technology used for the frontend is React.
 
+---
+
 ## Preparations for working with the Rangiffler project
 
 #### 1. Install Docker by following the instructions for your operating system
@@ -72,6 +74,8 @@ To check the installed version, run the command `java -version`.
 #### 7. Install the package manager for building the front-end (npm)
 The recommended version of Node.js is 18.13.0 (LTS).
 Follow the [instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to download and install Node.js and npm.
+
+---
 
 ## Running Rangiffler
 
@@ -135,6 +139,7 @@ Execute the following command:
 cd rangiffler-e-2-e-tests
 gradle clean test
 ```
+---
 
 ### Viewing Allure Report
 Execute the following command:
