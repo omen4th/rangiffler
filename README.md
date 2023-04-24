@@ -81,16 +81,18 @@ Follow the [instructions](https://docs.npmjs.com/downloading-and-installing-node
 
 #### 1. Launch the Frontend
 
-1. Navigate to the frontend module:
+* Navigate to the frontend module:
 ```bash
 cd rangiffler-client
 ```
-2. Install dependencies:
+
+* Install dependencies:
 ```bash
 cd npm i
 ```
 You can skip this step for subsequent launches if no changes have been made to the frontend.
-3. Launch the frontend:
+
+* Launch the frontend:
 ```bash
 npm start
 ```
