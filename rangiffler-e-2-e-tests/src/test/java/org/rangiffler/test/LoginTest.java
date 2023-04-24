@@ -13,6 +13,8 @@ import org.rangiffler.page.LoginPage;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.WelcomePage;
 
+import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.LOGIN;
+import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.METHOD;
 import static org.rangiffler.utils.ErrorMessage.BAD_CREDENTIALS;
 
 @Epic("[WEB][rangiffler-frontend]: Authorization")
@@ -24,7 +26,7 @@ public class LoginTest extends BaseWebTest {
     @DisplayName("WEB: The main page should be displayed after a user logs in")
     @Tag("WEB")
     @GenerateUser()
-    void mainPageShouldBeDisplayedAfterSuccessLogin(@User UserGrpc user) {
+    void mainPageShouldBeDisplayedAfterSuccessLogin(@User(use = METHOD) UserGrpc user) {
         Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
                 .fillLoginPage(user.getUsername(), user.getPassword())
@@ -37,7 +39,7 @@ public class LoginTest extends BaseWebTest {
     @DisplayName("WEB: When user enters incorrect password, they remain unauthorized")
     @Tag("WEB")
     @GenerateUser()
-    void userShouldStayOnLoginPageAfterLoginWithBadPasswordCredentials(@User UserGrpc user) {
+    void userShouldStayOnLoginPageAfterLoginWithBadPasswordCredentials(@User(use = METHOD) UserGrpc user) {
         LoginPage loginPage = Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
                 .fillLoginPage(user.getUsername(), "BAD" + user.getPassword());
@@ -51,7 +53,7 @@ public class LoginTest extends BaseWebTest {
     @DisplayName("WEB: When user enters incorrect login, they remain unauthorized")
     @Tag("WEB")
     @GenerateUser()
-    void userShouldStayOnLoginPageAfterLoginWithBadLoginCredentials(@User UserGrpc user) {
+    void userShouldStayOnLoginPageAfterLoginWithBadLoginCredentials(@User(use = METHOD) UserGrpc user) {
         LoginPage loginPage = Selenide.open(WelcomePage.URL, WelcomePage.class)
                 .doLogin()
                 .fillLoginPage("BAD" + user.getUsername(), user.getPassword());

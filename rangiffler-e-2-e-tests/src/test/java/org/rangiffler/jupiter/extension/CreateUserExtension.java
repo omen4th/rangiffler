@@ -29,42 +29,42 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
     protected static final Config CFG = Config.getConfig();
 
     public static final ExtensionContext.Namespace
-            API_LOGIN_USERS_NAMESPACE = ExtensionContext.Namespace.create(CreateUserExtension.class);
+            API_LOGIN_USERS_NAMESPACE = ExtensionContext.Namespace.create(CreateUserExtension.class, USE.LOGIN),
+            ON_METHOD_USERS_NAMESPACE = ExtensionContext.Namespace.create(CreateUserExtension.class, USE.METHOD);
 
 
     @Step("Create user for test")
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         final String testId = getTestId(context);
+        Map<USE, List<GenerateUser>> userAnnotations = extractGenerateUserAnnotations(context);
+        for (Map.Entry<USE, List<GenerateUser>> entry : userAnnotations.entrySet()) {
+            UserGrpc[] resultCollector = new UserGrpc[entry.getValue().size()];
+            List<GenerateUser> value = entry.getValue();
+            for (int i = 0; i < value.size(); i++) {
+                GenerateUser generateUser = value.get(i);
+                String username = generateUser.username();
+                String password = generateUser.password();
+                if ("".equals(username)) {
+                    username = generateRandomUsername();
+                }
+                if ("".equals(password)) {
+                    password = generateRandomPassword();
+                }
+                UserGrpc createdUser = apiRegister(username, password);
 
-        List<GenerateUser> userAnnotations = extractGenerateUserAnnotations(context);
-        UserGrpc[] resultCollector = new UserGrpc[userAnnotations.size()];
-
-        for (int i = 0; i < userAnnotations.size(); i++) {
-            GenerateUser generateUser = userAnnotations.get(i);
-            String username = generateUser.username();
-            String password = generateUser.password();
-            if ("".equals(username)) {
-                username = generateRandomUsername();
+                updateUserInfoIfPresent(generateUser, createdUser);
+                createFriendsIfPresent(generateUser, createdUser);
+                createIncomeInvitationsIfPresent(generateUser, createdUser);
+                createOutcomeInvitationsIfPresent(generateUser, createdUser);
+                addPhotosIfPresent(generateUser, createdUser);
+                addFriendsPhotosIfPresent(generateUser, createdUser);
+                resultCollector[i] = createdUser;
             }
-            if ("".equals(password)) {
-                password = generateRandomPassword();
-            }
-            UserGrpc createdUser = apiRegister(username, password);
 
-            updateUserInfoIfPresent(generateUser, createdUser);
-            createFriendsIfPresent(generateUser, createdUser);
-            createIncomeInvitationsIfPresent(generateUser, createdUser);
-            createOutcomeInvitationsIfPresent(generateUser, createdUser);
-            addPhotosIfPresent(generateUser, createdUser);
-            addFriendsPhotosIfPresent(generateUser, createdUser);
-            resultCollector[i] = createdUser;
+            Object storedResult = resultCollector.length == 1 ? resultCollector[0] : resultCollector;
+            context.getStore(entry.getKey().getNamespace()).put(testId, storedResult);
         }
-
-        Object storedResult = resultCollector.length == 1 ? resultCollector[0] : resultCollector;
-        context.getStore(API_LOGIN_USERS_NAMESPACE).put(testId, storedResult);
-
-        //TODO: delete users after test
     }
 
     @Override
@@ -77,7 +77,8 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         final String testId = getTestId(extensionContext);
-        return extensionContext.getStore(API_LOGIN_USERS_NAMESPACE).get(testId);
+        User annotation = parameterContext.getParameter().getAnnotation(User.class);
+        return extensionContext.getStore(annotation.use().getNamespace()).get(testId);
     }
 
     private String getTestId(ExtensionContext context) {
@@ -86,18 +87,36 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
         ).value();
     }
 
-    private List<GenerateUser> extractGenerateUserAnnotations(ExtensionContext context) {
-        List<GenerateUser> annotationsOnTest = new ArrayList<>();
+    public enum USE {
+        METHOD, LOGIN;
+
+        public ExtensionContext.Namespace getNamespace() {
+            switch (this) {
+                case METHOD -> {
+                    return ON_METHOD_USERS_NAMESPACE;
+                }
+                case LOGIN -> {
+                    return API_LOGIN_USERS_NAMESPACE;
+                }
+                default -> {
+                    throw new IllegalStateException();
+                }
+            }
+        }
+    }
+
+    private Map<USE, List<GenerateUser>> extractGenerateUserAnnotations(ExtensionContext context) {
+        Map<USE, List<GenerateUser>> annotationsOnTest = new HashMap<>();
         GenerateUser singleUserAnnotation = context.getRequiredTestMethod().getAnnotation(GenerateUser.class);
         GenerateUsers multipleUserAnnotation = context.getRequiredTestMethod().getAnnotation(GenerateUsers.class);
         if (singleUserAnnotation != null && singleUserAnnotation.handleAnnotation()) {
-            annotationsOnTest.add(singleUserAnnotation);
+            annotationsOnTest.put(USE.METHOD, List.of(singleUserAnnotation));
         } else if (multipleUserAnnotation != null) {
-            annotationsOnTest.addAll(Arrays.asList(multipleUserAnnotation.value()));
+            annotationsOnTest.put(USE.METHOD, Arrays.asList(multipleUserAnnotation.value()));
         }
         ApiLogin apiLoginAnnotation = context.getRequiredTestMethod().getAnnotation(ApiLogin.class);
         if (apiLoginAnnotation != null && apiLoginAnnotation.rangifflerUser().handleAnnotation()) {
-            annotationsOnTest.add(apiLoginAnnotation.rangifflerUser());
+            annotationsOnTest.put(USE.LOGIN, List.of(apiLoginAnnotation.rangifflerUser()));
         }
         return annotationsOnTest;
     }

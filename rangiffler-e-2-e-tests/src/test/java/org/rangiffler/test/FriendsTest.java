@@ -12,6 +12,9 @@ import org.rangiffler.page.MainPage;
 
 import java.util.List;
 
+import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.LOGIN;
+import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.METHOD;
+
 @Epic("[WEB][rangiffler-frontend]: Friends")
 @DisplayName("[WEB][rangiffler-frontend]: Friends")
 public class FriendsTest extends BaseWebTest {
@@ -151,6 +154,29 @@ public class FriendsTest extends BaseWebTest {
         mainPage.getNavigationPanel()
                 .toPeopleAroundPage()
                 .checkIconChangedToAddFriend(usernameToRemove);
+
+        mainPage.getHeader()
+                .checkFriendsCountInHeader(0);
+    }
+
+    @Test
+    @AllureId("4008")
+    @DisplayName("WEB: User should be able to send an invitation from People Around page")
+    @Tag("WEB")
+    @ApiLogin(rangifflerUser = @GenerateUser)
+    @GenerateUser()
+    void shouldSendInvitation(@User(use = LOGIN) UserGrpc currentUser, @User(use = METHOD) UserGrpc userToSendInvitation) {
+        MainPage mainPage = Selenide.open(MainPage.URL, MainPage.class);
+        mainPage.getNavigationPanel()
+                .toPeopleAroundPage()
+                .sendInvitationUser(userToSendInvitation.getUsername())
+                .checkSussesMessage("Invitation to user " + userToSendInvitation.getUsername() + " is sent");
+
+        Selenide.refresh();
+
+        mainPage.getNavigationPanel()
+                .toPeopleAroundPage()
+                .checkIconChangedToInvitationSentTest(userToSendInvitation.getUsername());
 
         mainPage.getHeader()
                 .checkFriendsCountInHeader(0);

@@ -12,6 +12,7 @@ import org.rangiffler.model.UserGrpc;
 import org.rangiffler.page.MainPage;
 import org.rangiffler.page.WelcomePage;
 
+import static org.rangiffler.jupiter.extension.CreateUserExtension.USE.METHOD;
 import static org.rangiffler.utils.DataUtils.generateRandomPassword;
 import static org.rangiffler.utils.DataUtils.generateRandomUsername;
 import static org.rangiffler.utils.ErrorMessage.PASSWORDS_SHOULD_BE_EQUAL;
@@ -45,7 +46,7 @@ public class RegistrationTest extends BaseWebTest {
     @DisplayName("WEB: Error occurs during registration if user with such username already exists")
     @Tag("WEB")
     @GenerateUser()
-    void shouldNotRegisterUserWithExistingUsername(@User UserGrpc existingUser) {
+    void shouldNotRegisterUserWithExistingUsername(@User(use = METHOD) UserGrpc existingUser) {
         String username = existingUser.getUsername();
         String password = generateRandomPassword();
         Selenide.open(WelcomePage.URL, WelcomePage.class)

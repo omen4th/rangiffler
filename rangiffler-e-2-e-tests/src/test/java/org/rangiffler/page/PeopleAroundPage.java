@@ -4,8 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -23,33 +22,49 @@ public class PeopleAroundPage extends BasePage<PeopleAroundPage> {
 
     @Step("Accept invitation from user {username}")
     public PeopleAroundPage acceptInvitationFromUser(String username) {
-        userTableRows.filter(text(username)).first().scrollTo().$(acceptInvitationIcon).click();
+        userTableRows.find(text(username)).scrollTo().$(acceptInvitationIcon).click();
         return this;
     }
 
     @Step("Check that icon is changed after the invitation is accepted")
     public PeopleAroundPage checkIconChangedToRemoveFriend(String username) {
-        userTableRows.filter(text(username)).first().scrollTo().$(removeFriendIcon).shouldBe(visible);
+        userTableRows.find(text(username)).scrollTo().$(removeFriendIcon).shouldBe(visible);
         return this;
     }
 
     @Step("Decline invitation from user {username}")
     public PeopleAroundPage declineInvitationFromUser(String username) {
-        userTableRows.filter(text(username)).first().scrollTo().$(declineInvitationIcon).click();
+        userTableRows.find(text(username)).scrollTo().$(declineInvitationIcon).click();
         declineInvitationButton.click();
         return this;
     }
 
     @Step("Decline invitation from user {username}")
     public PeopleAroundPage removeUserFromFriends(String username) {
-        userTableRows.filter(text(username)).first().scrollTo().$(removeFriendIcon).click();
+        userTableRows.find(text(username)).scrollTo().$(removeFriendIcon).click();
         deleteFriendButton.click();
+        return this;
+    }
+
+    @Step("Send invitation to user {username}")
+    public PeopleAroundPage sendInvitationUser(String username) {
+        userTableRows.find(text(username)).$(addFriendIcon).click();
         return this;
     }
 
     @Step("Check that icon is changed after the invitation is accepted")
     public PeopleAroundPage checkIconChangedToAddFriend(String username) {
-        userTableRows.filter(text(username)).first().scrollTo().$(addFriendIcon).shouldBe(visible);
+        userTableRows.find(text(username)).scrollTo().$(addFriendIcon).shouldBe(visible);
+        return this;
+    }
+
+    @Step("Check that icon is changed after the invitation is send")
+    public PeopleAroundPage checkIconChangedToInvitationSentTest(String username) {
+        userTableRows.find(text(username))
+                .scrollTo()
+                .$$("td")
+                .get(3)
+                .shouldHave(text("Invitation sent"));
         return this;
     }
 
