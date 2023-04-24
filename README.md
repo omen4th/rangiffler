@@ -79,26 +79,24 @@ Follow the [instructions](https://docs.npmjs.com/downloading-and-installing-node
 
 ## Running Rangiffler
 
-### 1. Launch the Frontend
+#### 1. Launch the Frontend
 
-#### 1. Navigate to the frontend module
+1. Navigate to the frontend module:
 ```bash
 cd rangiffler-client
 ```
-
-#### 2. Install dependencies
+2. Install dependencies:
 ```bash
 cd npm i
 ```
 You can skip this step for subsequent launches if no changes have been made to the frontend.
-
-#### 3. Launch the frontend
+3. Launch the frontend:
 ```bash
 npm start
 ```
 The frontend will start in your browser at port 3001: http://127.0.0.1:3001/.
 
-### 2. Launch the remaining services in any order: Rangiffler-auth, Rangiffler-users, Rangiffler-geo, Rangiffler-photo, Rangiffler-gateway
+#### 2. Launch the remaining services in any order: Rangiffler-auth, Rangiffler-users, Rangiffler-geo, Rangiffler-photo, Rangiffler-gateway
 
 #### Launch from IDE
 In the RangifflerAuthApplication, RangifflerGatewayApp, RangifflerGeoApplication, RangifflerUsersApplication, and RangifflerPhotoApplication classes, select 'run' in your IDE.
@@ -125,7 +123,9 @@ cd rangiffler-photo
 gradle bootRun
 ```
 
-### 3. Open the frontend in your browser http://127.0.0.1:3001/ and enjoy!
+#### 3. Open the frontend in your browser http://127.0.0.1:3001/ and enjoy!
+
+---
 
 ## Running e2e Tests and viewing report
 
@@ -139,7 +139,6 @@ Execute the following command:
 cd rangiffler-e-2-e-tests
 gradle clean test
 ```
----
 
 ### Viewing Allure Report
 Execute the following command:
