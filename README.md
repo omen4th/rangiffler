@@ -16,7 +16,7 @@ This repository showcases the work I've done using technologies:
 - JUnit 5 (Extensions, Resolvers, etc)
 - Retrofit 2
 - Allure
-- Selenide.
+- Selenide
 
 These technologies have been used to develop a backend on microservices and create end-to-end automated tests.
 
