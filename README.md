@@ -1,6 +1,7 @@
 # Rangiffler
-Welcome to Rangiffler! This project has been inspired by the teachings of QA.GURU, and I'm excited to share some of the
+Welcome to Rangiffler! This project has been inspired by my training at `QA.GURU`, and I'm excited to share some of the
 key accomplishments I've achieved throughout my studies.
+I hope that this repository will provide insight into my skills and approach to work.
 
 This repository showcases the work I've done using technologies:
 - Java 17
@@ -17,11 +18,11 @@ This repository showcases the work I've done using technologies:
 - Allure
 - Selenide.
 
-- These technologies have been used to develop a backend on microservices and create end-to-end automated tests.
+These technologies have been used to develop a backend on microservices and create end-to-end automated tests.
 
-I hope that this repository will provide insight into my skills and approach to work.
+The main technology used for the frontend is React.
 
-# Preparations for working with the Rangiffler project
+## Preparations for working with the Rangiffler project
 
 #### 1. Install Docker by following the instructions for your operating system
 - [Windows](https://docs.docker.com/desktop/install/windows-install/)
@@ -72,4 +73,77 @@ To check the installed version, run the command `java -version`.
 The recommended version of Node.js is 18.13.0 (LTS).
 Follow the [instructions](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to download and install Node.js and npm.
 
+## Running Rangiffler
 
+### 1. Launch the Frontend
+
+#### 1. Navigate to the frontend module
+```bash
+cd rangiffler-client
+```
+
+#### 2. Install dependencies
+```bash
+cd npm i
+```
+You can skip this step for subsequent launches if no changes have been made to the frontend.
+
+#### 3. Launch the frontend
+```bash
+npm start
+```
+The frontend will start in your browser at port 3001: http://127.0.0.1:3001/.
+
+### 2. Launch the remaining services in any order: Rangiffler-auth, Rangiffler-users, Rangiffler-geo, Rangiffler-photo, Rangiffler-gateway
+
+#### Launch from IDE
+In the RangifflerAuthApplication, RangifflerGatewayApp, RangifflerGeoApplication, RangifflerUsersApplication, and RangifflerPhotoApplication classes, select 'run' in your IDE.
+
+#### Launch using Gradle
+```bash
+cd rangiffler-auth
+gradle bootRun
+```
+```bash
+cd rangiffler-gateway
+gradle bootRun
+```
+```bash
+cd rangiffler-users
+gradle bootRun
+```
+```bash
+cd rangiffler-geo
+gradle bootRun
+```
+```bash
+cd rangiffler-photo
+gradle bootRun
+```
+
+### 3. Open the frontend in your browser http://127.0.0.1:3001/ and enjoy!
+
+## Running e2e Tests and viewing report
+
+### Launching tests
+#### Launch from IDE
+Go to the rangiffler-e-2-e-tests module and select 'run' in your IDE.
+
+#### Launch using Gradle
+Execute the following command:
+```bash
+cd rangiffler-e-2-e-tests
+gradle clean test
+```
+
+### Viewing Allure Report
+Execute the following command:
+```bash
+cd rangiffler-e-2-e-tests
+gradle allureServe
+```
+
+This open launch the Allure report in your default browser. The report will contain detailed information on the tests run.
+
+---
+Thanks for reading!
