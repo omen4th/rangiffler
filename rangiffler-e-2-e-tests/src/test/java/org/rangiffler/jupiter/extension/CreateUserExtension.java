@@ -194,10 +194,12 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                 PhotoGrpc photoGrpc = new PhotoGrpc();
                 photoGrpc.setPhoto(getPhotoByteFromClasspath(photo.photoPath()));
                 photoGrpc.setDescription(photo.description());
-                photoGrpc.setCountry(CountryGrpc.builder().code(photo.country().getCode()).build());
+                photoGrpc.setCountry(CountryGrpc.builder().name(photo.country().toString()).code(photo.country().getCode()).build());
                 photoGrpc.setUsername(createdUser.getUsername());
                 photoGrpc.setPhotoPath(photo.photoPath());
-                photoClient.addUserPhoto(photoGrpc);
+                PhotoGrpc created = photoClient.addUserPhoto(photoGrpc);
+                photoGrpc.setId(created.getId());
+
                 createdUser.getPhotosGrpcList().add(photoGrpc);
             }
         }
@@ -209,7 +211,7 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
             for (int i = 0; i < friends.count(); i++) {
                 UserGrpc friend = createdUser.getFriendsGrpcList().get(i);
 
-                for (i = 0; i < 2; i++) {
+                for (int j = 0; j < 2; j++) {
                     String photoPath = getRandomPhotoPath();
                     Country country = getRandomCountry();
                     PhotoGrpc photoGrpc = new PhotoGrpc();
@@ -218,7 +220,8 @@ public class CreateUserExtension implements BeforeEachCallback, ParameterResolve
                     photoGrpc.setCountry(CountryGrpc.builder().code(country.getCode()).name(country.toString()).build());
                     photoGrpc.setUsername(friend.getUsername());
                     photoGrpc.setPhotoPath(photoPath);
-                    photoClient.addUserPhoto(photoGrpc);
+                    PhotoGrpc created = photoClient.addUserPhoto(photoGrpc);
+                    photoGrpc.setId(created.getId());
 
                     friend.getPhotosGrpcList().add(photoGrpc);
                 }
